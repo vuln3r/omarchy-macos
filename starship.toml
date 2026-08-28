@@ -13,10 +13,11 @@ $os\
 $directory\
 $git_branch$git_status\
 $nodejs$python$rust$golang$php$swift$java\
-$fill\
-$cmd_duration\
-$time\
-$line_break$character"""
+$character"""
+
+# Duration and clock go to the right prompt - on a single-line prompt $fill
+# would push the character past them, to the far right of the window.
+right_format = """$cmd_duration$time"""
 
 palette = 'osakajade'
 
@@ -105,9 +106,6 @@ symbol = ""
 style = "fg:red"
 format = '[ $symbol $version ]($style)'
 
-[fill]
-symbol = ' '
-
 [cmd_duration]
 min_time = 2000
 style = "fg:comment"
@@ -120,6 +118,7 @@ style = "fg:comment"
 format = '[ $time ]($style)'
 
 [character]
-success_symbol = '[❯](bold green)'
-error_symbol = '[❯](bold red)'
-vimcmd_symbol = '[❮](bold blue)'
+# The leading space separates it from the last segment's arrow.
+success_symbol = '[ ❯](bold green)'
+error_symbol = '[ ❯](bold red)'
+vimcmd_symbol = '[ ❮](bold blue)'
