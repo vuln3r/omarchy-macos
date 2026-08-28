@@ -34,6 +34,7 @@ itself when Tailscale is not installed.
 | [Ghostty](https://ghostty.org) | terminal | `ghostty/config` -> `~/.config/ghostty/config` |
 | [Starship](https://starship.rs) | prompt | `starship.toml` -> `~/.config/starship.toml` |
 | [fastfetch](https://github.com/fastfetch-cli/fastfetch) | greeting | `fastfetch/config.jsonc` -> `~/.config/fastfetch/config.jsonc` |
+| zsh plugin colors | typing feedback | `zsh/osaka-jade.zsh` -> `~/.config/zsh/osaka-jade.zsh` |
 
 Everything is **symlinked** into `~`, not copied, so editing here takes effect
 right away. `aerospace.toml` even reloads itself on save.
@@ -184,6 +185,20 @@ variables from `sketchybarrc`, so every plugin sources the file itself.
 `sketchybar/sketchybarrc` and `gaps.outer.top` in `aerospace.toml`. The bar is
 `topmost` and reserves no space of its own, so if you change the height the gap
 has to follow, or the bar covers the windows at the top.
+
+**Typing feedback** comes from
+[zsh-autosuggestions](https://github.com/zsh-users/zsh-autosuggestions) and
+[zsh-syntax-highlighting](https://github.com/zsh-users/zsh-syntax-highlighting).
+This repo does not install them - if they are there, `zsh/osaka-jade.zsh` puts
+them in the palette, otherwise it does nothing. It has to be sourced *after*
+the plugins load, which is why the `lyx-theme` block belongs at the end of
+`.zshrc`.
+
+Worth knowing if you write your own: the autosuggestion default is `fg=8`,
+which in this palette means `#53685b` on `#111c18` - **2.9:1**, below every
+contrast floor, which reads as "the suggestions are not working". Jade at
+4.9:1 is visible without competing with real output. The syntax highlighter's
+default comment style has the same problem, it is black on near-black.
 
 **The greeting** is fastfetch, called from the `lyx-theme` block in `.zshrc`
 for interactive shells only, so scripts and the shells editors spawn stay

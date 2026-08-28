@@ -111,6 +111,7 @@ link sketchybar                "$CONFIG_DIR/sketchybar"
 link bordersrc                 "$CONFIG_DIR/borders/bordersrc"
 link starship.toml             "$CONFIG_DIR/starship.toml"
 link fastfetch/config.jsonc    "$CONFIG_DIR/fastfetch/config.jsonc"
+link zsh/osaka-jade.zsh        "$CONFIG_DIR/zsh/osaka-jade.zsh"
 
 chmod +x "$THEME_DIR/sketchybar/sketchybarrc" "$THEME_DIR/sketchybar/plugins/"*.sh "$THEME_DIR/bordersrc"
 
@@ -127,6 +128,10 @@ cat >> "$ZSHRC" <<'ZBLOCK'
 # >>> lyx-theme >>>
 export STARSHIP_CONFIG="$HOME/.config/starship.toml"
 eval "$(starship init zsh)"
+
+# Palette for zsh-autosuggestions and zsh-syntax-highlighting. Last in the
+# file on purpose - both plugins have to be loaded before this runs.
+[ -r "$HOME/.config/zsh/osaka-jade.zsh" ] && source "$HOME/.config/zsh/osaka-jade.zsh"
 
 # A greeting instead of an empty window. Interactive only - scripts and the
 # shells editors spawn stay quiet.

@@ -92,9 +92,10 @@ unlink_one "$CONFIG_DIR/sketchybar"
 unlink_one "$CONFIG_DIR/borders/bordersrc"
 unlink_one "$CONFIG_DIR/starship.toml"
 unlink_one "$CONFIG_DIR/fastfetch/config.jsonc"
+unlink_one "$CONFIG_DIR/zsh/osaka-jade.zsh"
 
 # Take emptied directories with us, but only when they really are empty.
-for d in "$CONFIG_DIR/ghostty" "$CONFIG_DIR/borders" "$CONFIG_DIR/fastfetch"; do
+for d in "$CONFIG_DIR/ghostty" "$CONFIG_DIR/borders" "$CONFIG_DIR/fastfetch" "$CONFIG_DIR/zsh"; do
     [ -d "$d" ] && rmdir "$d" 2>/dev/null && ok "empty directory removed: ${d#$HOME/}"
 done
 [ -d "$BACKUP_DIR" ] && find "$BACKUP_DIR" -type d -empty -delete 2>/dev/null || true
