@@ -127,7 +127,7 @@ send it there anyway.
 | WS | Contents |
 |---|---|
 | **1** | Cursor, VS Code, Xcode, GitKraken |
-| **2** | Ghostty, Warp, iTerm, Terminal |
+| **2** | Ghostty, Terminal |
 | **3** | Chrome, Safari |
 | **4** | Slack, Mail, Spark, Messages, Calendar |
 | **5** | Claude, ChatGPT, Grok, LM Studio |

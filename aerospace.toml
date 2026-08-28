@@ -224,10 +224,6 @@ run = 'move-node-to-workspace 1'
 if.app-id = 'com.mitchellh.ghostty'
 run = 'move-node-to-workspace 2'
 
-[[on-window-detected]]
-if.app-id = 'dev.warp.Warp-Stable'
-run = 'move-node-to-workspace 2'
-
 # --- 3: browsers ---
 [[on-window-detected]]
 if.app-id = 'com.google.Chrome'
