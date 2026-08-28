@@ -3,15 +3,16 @@
 
 "$schema" = 'https://starship.rs/config-schema.json'
 
+# Segments carry their own separators instead of the format string chaining
+# them: outside a git repo the chained version leaves a stray coloured wedge
+# where the branch segment would have been.
 format = """
 [](bg0)\
 $os\
+[](fg:bg0 bg:blue)\
 $directory\
-[](fg:bg0 bg:bg1)\
 $git_branch$git_status\
-[](fg:bg1 bg:bg2)\
 $nodejs$python$rust$golang$php$swift$java\
-[](fg:bg2)\
 $fill\
 $cmd_duration\
 $time\
@@ -44,9 +45,11 @@ format = '[ $symbol ]($style)'
 [os.symbols]
 Macos = ""
 
+# bg1 is the terminal background, so a segment painted in it has no visible
+# edge at all. Jade and gold carry the powerline instead, dark text on top.
 [directory]
-style = "bg:bg0 fg:fg"
-format = "[ $path ]($style)"
+style = "bg:blue fg:bg1"
+format = "[ $path ]($style)[](fg:blue)"
 truncation_length = 3
 truncation_symbol = "…/"
 
@@ -60,46 +63,46 @@ truncation_symbol = "…/"
 
 [git_branch]
 symbol = ""
-style = "bg:bg1 fg:fg"
-format = '[ $symbol $branch ]($style)'
+style = "bg:yellow fg:bg1"
+format = '[](fg:yellow)[ $symbol $branch ]($style)'
 
 [git_status]
-style = "bg:bg1 fg:yellow"
-format = '[$all_status$ahead_behind ]($style)'
+style = "bg:yellow fg:bg1"
+format = '[$all_status$ahead_behind ]($style)[](fg:yellow)'
 
 [nodejs]
 symbol = ""
-style = "bg:bg2 fg:green"
+style = "fg:green"
 format = '[ $symbol $version ]($style)'
 
 [python]
 symbol = ""
-style = "bg:bg2 fg:yellow"
+style = "fg:yellow"
 format = '[ $symbol $version ]($style)'
 
 [rust]
 symbol = ""
-style = "bg:bg2 fg:orange"
+style = "fg:orange"
 format = '[ $symbol $version ]($style)'
 
 [golang]
 symbol = ""
-style = "bg:bg2 fg:cyan"
+style = "fg:cyan"
 format = '[ $symbol $version ]($style)'
 
 [php]
 symbol = ""
-style = "bg:bg2 fg:magenta"
+style = "fg:magenta"
 format = '[ $symbol $version ]($style)'
 
 [swift]
 symbol = ""
-style = "bg:bg2 fg:orange"
+style = "fg:orange"
 format = '[ $symbol $version ]($style)'
 
 [java]
 symbol = ""
-style = "bg:bg2 fg:red"
+style = "fg:red"
 format = '[ $symbol $version ]($style)'
 
 [fill]
