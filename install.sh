@@ -117,6 +117,7 @@ link fastfetch/config.jsonc    "$CONFIG_DIR/fastfetch/config.jsonc"
 link zsh/osaka-jade.zsh        "$CONFIG_DIR/zsh/osaka-jade.zsh"
 link zsh/shell.zsh             "$CONFIG_DIR/zsh/shell.zsh"
 link btop                      "$CONFIG_DIR/btop"
+link nvim                      "$CONFIG_DIR/nvim"
 
 chmod +x "$THEME_DIR/sketchybar/sketchybarrc" "$THEME_DIR/sketchybar/plugins/"*.sh "$THEME_DIR/bordersrc"
 
