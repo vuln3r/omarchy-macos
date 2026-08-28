@@ -115,6 +115,13 @@ sketchybar --add item memory right \
                         padding_right=6 \
                         script="$PLUGIN_DIR/memory.sh"
 
+# --- Right: Tailscale -------------------------------------------------------
+sketchybar --add item tailscale right \
+           --set tailscale update_freq=15 \
+                           padding_right=6 \
+                           click_script="open -a Tailscale" \
+                           script="$PLUGIN_DIR/tailscale.sh"
+
 # --- Right: Wi-Fi -----------------------------------------------------------
 sketchybar --add item wifi right \
            --set wifi update_freq=30 \

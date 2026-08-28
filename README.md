@@ -18,7 +18,11 @@ Omarchy's idea, built for macOS.
 ```
 
 Workspaces, the focused app and the running timer on the left, the clock in the
-middle, memory, volume, battery and Wi-Fi on the right.
+middle, memory, volume, battery, Tailscale and Wi-Fi on the right.
+
+The Tailscale item reads the connection state from `scutil` and matches on the
+bundle id rather than the display name, which is editable in the app. It hides
+itself when Tailscale is not installed.
 
 ## What it is made of
 
