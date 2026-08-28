@@ -7,15 +7,18 @@ Palette. Omarchy-Idee, macOS-Umsetzung.
 > Getestet auf MacBook Pro 16" M1 Max, macOS 27.0.
 
 ```
-   ┌─ SketchyBar ───────────────────────────────────────────┐
-   │  1 2 3 4 5   Ghostty          68%   墳 62%   80%  │
-   ├────────────────────────────┬───────────────────────────┤
-   │                            │                           │
-   │         Ghostty            │        Chrome             │
-   │                            │                           │
-   └────────────────────────────┴───────────────────────────┘
+   ┌─ SketchyBar ──────────────────────────────────────────────────────┐
+   │ 1 2 3 4 5  Ghostty  ▶ APA: Maintenance 2:34   Fri 28.08   68% 80% │
+   ├──────────────────────────────┬────────────────────────────────────┤
+   │                              │                                    │
+   │           Ghostty            │             Chrome                 │
+   │                              │                                    │
+   └──────────────────────────────┴────────────────────────────────────┘
       JankyBorders zeichnet den Jade-Rahmen ums aktive Fenster
 ```
+
+Links die Workspaces, die fokussierte App und der laufende Tyme-Timer, mittig
+die Uhr, rechts RAM, Lautstärke, Batterie und WLAN.
 
 ## Woraus es besteht
 
@@ -143,6 +146,18 @@ run = 'move-node-to-workspace 3'
 
 Die Regeln greifen nur bei **neu erkannten** Fenstern. Schon offene Fenster
 sortieren sich erst nach einem Neustart von AeroSpace ein.
+
+## Zeiterfassung
+
+Läuft in [Tyme](https://www.tyme-app.com) ein Timer, zeigt die Leiste
+`Projekt: Aufgabe h:mm`. Klick öffnet Tyme, ohne Timer bleibt ein gedämpftes
+Pause-Symbol, und ist Tyme gar nicht offen, verschwindet das Item.
+
+Angezeigt wird die **Subtask**, nicht der Task: `trackedTaskIDs` liefert die
+Subtask-ID, der Task steckt in `relatedTaskID`. Wer seine Tasks „Development"
+und „Meetings" nennt und die Arbeit in Subtasks führt, will genau das sehen.
+Ab 24 Zeichen wird gekürzt — die Zahl steht als `maxLen` in
+`sketchybar/plugins/tyme.sh`.
 
 ## Bedienen
 

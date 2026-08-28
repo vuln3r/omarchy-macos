@@ -9,7 +9,16 @@ source "$CONFIG_DIR/colors.sh"
 FONT="JetBrainsMono Nerd Font"
 
 # --- Bar --------------------------------------------------------------------
+# notch_*: SketchyBar erkennt das Notch-Display an seiner Hoehe und laesst
+# zentrierte Items dort ausweichen. Am externen Monitor (keine Notch) bleibt
+# die Uhr exakt mittig — das ist das if/else, ohne eigenes Skript.
+# ponytail: notch_display_height ist der 16"-Standardwert und UNGEPRUEFT,
+# solange der Deckel zu ist. Stimmt die Hoehe nicht, greift die Ausweich-
+# logik am Laptop nicht. Nachmessen: aerospace list-monitors bei offenem
+# Deckel, bzw. 'UI Looks like' aus system_profiler SPDisplaysDataType.
 sketchybar --bar height=32 \
+                 notch_width=200 \
+                 notch_display_height=1117 \
                  blur_radius=30 \
                  position=top \
                  sticky=on \
@@ -70,8 +79,16 @@ sketchybar --add item front_app left \
                            script="$PLUGIN_DIR/front_app.sh" \
            --subscribe front_app front_app_switched
 
+# --- Links: Tyme-Zeiterfassung ----------------------------------------------
+# Zeigt Projekt + Laufzeit, solange ein Timer laeuft. Klick oeffnet Tyme.
+sketchybar --add item tyme left \
+           --set tyme update_freq=30 \
+                      padding_left=12 \
+                      click_script="open -a Tyme" \
+                      script="$PLUGIN_DIR/tyme.sh"
+
 # --- Rechts: Uhr ------------------------------------------------------------
-sketchybar --add item clock right \
+sketchybar --add item clock center \
            --set clock icon="" \
                        icon.color=$ACCENT \
                        background.drawing=on \
