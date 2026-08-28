@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# lyx-theme — JankyBorders (Osaka Jade)
-# Wird von `borders` ohne Argumente automatisch gelesen.  man borders
+# lyx-theme - JankyBorders (Osaka Jade)
+# Read automatically by `borders` when invoked without arguments.  man borders
 
 exec borders \
     style=round \

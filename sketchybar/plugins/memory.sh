@@ -1,10 +1,11 @@
 #!/usr/bin/env bash
-# RAM-Belegung wie im Aktivitaetsmonitor: aktiv + wired + komprimiert.
+# Memory in use, the way Activity Monitor counts it: active + wired +
+# compressed.
 #
-# ponytail: nicht die "free percentage" aus `memory_pressure` nehmen — die
-# zaehlt inactive-Seiten als frei und meldet 54%, waehrend real 240 MB frei
-# und 9 GB komprimiert sind. Bei LM Studio neben Xcode ist genau das der
-# Unterschied zwischen "passt" und "der Mac swappt gleich".
+# ponytail: do NOT use the "free percentage" from `memory_pressure`. It counts
+# inactive pages as free and reports 54% while only 240 MB are actually free
+# and 9 GB sit in the compressor - the difference between "fine" and "about to
+# start swapping".
 
 source "$CONFIG_DIR/colors.sh"
 

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 source "$CONFIG_DIR/colors.sh"
 
-# SSID via networksetup — `airport` gibt es seit macOS 14.4 nicht mehr.
+# SSID via networksetup - `airport` is gone as of macOS 14.4.
 
 SSID=$(networksetup -getairportnetwork en0 2>/dev/null | sed -n 's/^Current Wi-Fi Network: //p')
 

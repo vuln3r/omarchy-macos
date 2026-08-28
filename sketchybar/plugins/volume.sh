@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Lautstaerke. $INFO kommt vom volume_change-Event; sonst per osascript nachfragen.
+# Volume. $INFO comes from the volume_change event, otherwise ask osascript.
 
 VOLUME="${INFO:-$(osascript -e 'output volume of (get volume settings)' 2>/dev/null)}"
 [ -z "$VOLUME" ] && exit 0

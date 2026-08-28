@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
-# lyx-theme — Installation
-# Verlinkt die Configs nach ~/.config, installiert fehlende Pakete,
-# legt Feststelltaste auf Escape und startet die Dienste.
+# lyx-theme - installer
+# Links the configs into ~/.config, installs missing packages, maps Caps Lock
+# to Escape and starts the services.
 #
-# Alles, was hier passiert, macht uninstall.sh wieder rueckgaengig.
-# Kein SIP-Eingriff, keine Kernel-Extensions, kein sudo.
+# Everything done here is undone by uninstall.sh.
+# No SIP changes, no kernel extensions, no sudo.
 
 set -euo pipefail
 
@@ -13,7 +13,7 @@ CONFIG_DIR="$HOME/.config"
 BACKUP_DIR="$THEME_DIR/.backup"
 MANIFEST="$THEME_DIR/.installed-by-lyx"
 LAUNCH_AGENTS="$HOME/Library/LaunchAgents"
-AGENT_LABEL="at.sadu.lyx.capslock-escape"
+AGENT_LABEL="com.lyx-theme.capslock-escape"
 AGENT_PLIST="$LAUNCH_AGENTS/$AGENT_LABEL.plist"
 ZSHRC="$HOME/.zshrc"
 MARK_BEGIN="# >>> lyx-theme >>>"
@@ -22,82 +22,81 @@ MARK_END="# <<< lyx-theme <<<"
 info()  { printf '\033[1;34m::\033[0m %s\n' "$*"; }
 ok()    { printf '\033[1;32m ok\033[0m %s\n' "$*"; }
 warn()  { printf '\033[1;33m  !\033[0m %s\n' "$*"; }
-die()   { printf '\033[1;31mFEHLER\033[0m %s\n' "$*" >&2; exit 1; }
+die()   { printf '\033[1;31mERROR\033[0m %s\n' "$*" >&2; exit 1; }
 
 # --- Preflight --------------------------------------------------------------
-[ "$(uname -s)" = "Darwin" ] || die "Das hier ist nur fuer macOS."
-[ "$EUID" -ne 0 ] || die "Bitte NICHT mit sudo starten."
+[ "$(uname -s)" = "Darwin" ] || die "This is macOS only."
+[ "$EUID" -ne 0 ] || die "Do NOT run this with sudo."
 
 if ! command -v brew >/dev/null 2>&1; then
     for p in /opt/homebrew/bin/brew /usr/local/bin/brew; do
         [ -x "$p" ] && eval "$($p shellenv)" && break
     done
 fi
-command -v brew >/dev/null 2>&1 || die "Homebrew nicht gefunden. https://brew.sh"
+command -v brew >/dev/null 2>&1 || die "Homebrew not found. https://brew.sh"
 
-# --- Pakete -----------------------------------------------------------------
-# Stand geprueft 2026-08-28: das sind die aktuell gueltigen Namen.
-# 'borders' hiess frueher 'janky-borders', die Nerd-Fonts lagen frueher
-# im inzwischen aufgeloesten Tap homebrew/cask-fonts.
+# --- Packages ---------------------------------------------------------------
+# Names verified 2026-08-28. 'borders' used to be called 'janky-borders', and
+# the Nerd Fonts used to live in the now-retired homebrew/cask-fonts tap.
 TAPS=(felixkratz/formulae nikitabobko/tap)
 FORMULAE=(felixkratz/formulae/sketchybar felixkratz/formulae/borders starship jq)
 CASKS=(aerospace ghostty font-jetbrains-mono-nerd-font)
 
-info "Taps pruefen"
+info "Checking taps"
 for t in "${TAPS[@]}"; do
     if brew tap | grep -qx "$t"; then
         ok "tap $t"
     else
-        brew tap "$t" && ok "tap $t ergaenzt"
+        brew tap "$t" && ok "tap $t added"
     fi
 done
 
-info "Formeln pruefen"
+info "Checking formulae"
 for f in "${FORMULAE[@]}"; do
     short="${f##*/}"
     if brew list --formula "$short" >/dev/null 2>&1; then
         ok "$short"
     else
-        info "installiere $f"
-        brew install "$f" || die "brew install $f fehlgeschlagen — Name geaendert? 'brew search ${short}'"
+        info "installing $f"
+        brew install "$f" || die "brew install $f failed - renamed? try 'brew search ${short}'"
         echo "formula:$short" >> "$MANIFEST"
     fi
 done
 
-info "Casks pruefen"
+info "Checking casks"
 for c in "${CASKS[@]}"; do
     if brew list --cask "$c" >/dev/null 2>&1; then
         ok "$c"
     else
-        info "installiere $c"
-        brew install --cask "$c" || die "brew install --cask $c fehlgeschlagen — Name geaendert? 'brew search $c'"
+        info "installing $c"
+        brew install --cask "$c" || die "brew install --cask $c failed - renamed? try 'brew search $c'"
         echo "cask:$c" >> "$MANIFEST"
     fi
 done
 
-# --- Configs verlinken ------------------------------------------------------
-# link <quelle-relativ-zu-THEME_DIR> <ziel-absolut>
+# --- Link the configs -------------------------------------------------------
+# link <source-relative-to-THEME_DIR> <absolute-target>
 link() {
     local src="$THEME_DIR/$1" dst="$2"
-    [ -e "$src" ] || die "Quelle fehlt: $src"
+    [ -e "$src" ] || die "missing source: $src"
     mkdir -p "$(dirname "$dst")"
 
-    # Zeigt der Link schon zu uns? Dann nichts tun.
+    # Already pointing at us? Then leave it alone.
     if [ -L "$dst" ] && [ "$(readlink "$dst")" = "$src" ]; then
-        ok "$dst (bereits verlinkt)"
+        ok "$dst (already linked)"
         return
     fi
 
-    # Echte Datei/Ordner vorhanden -> einmalig sichern (erste Sicherung gewinnt).
+    # A real file or directory is in the way -> back it up once (first wins).
     if [ -e "$dst" ] || [ -L "$dst" ]; then
         local bak="$BACKUP_DIR/${dst#$HOME/}"
         if [ -e "$bak" ]; then
-            warn "$dst wird ersetzt (Sicherung existiert bereits)"
+            warn "$dst replaced (a backup already exists)"
             rm -rf "$dst"
         else
             mkdir -p "$(dirname "$bak")"
             mv "$dst" "$bak"
-            ok "$dst gesichert nach ${bak#$HOME/}"
+            ok "$dst backed up to ${bak#$HOME/}"
         fi
     fi
 
@@ -105,7 +104,7 @@ link() {
     ok "$dst -> ${src#$HOME/}"
 }
 
-info "Configs verlinken"
+info "Linking configs"
 link aerospace.toml            "$HOME/.aerospace.toml"
 link ghostty/config            "$CONFIG_DIR/ghostty/config"
 link sketchybar                "$CONFIG_DIR/sketchybar"
@@ -114,10 +113,10 @@ link starship.toml             "$CONFIG_DIR/starship.toml"
 
 chmod +x "$THEME_DIR/sketchybar/sketchybarrc" "$THEME_DIR/sketchybar/plugins/"*.sh "$THEME_DIR/bordersrc"
 
-# --- Starship in die zsh haengen -------------------------------------------
+# --- Hook Starship into zsh -------------------------------------------------
 info "Starship in $ZSHRC"
 if grep -qF "$MARK_BEGIN" "$ZSHRC" 2>/dev/null; then
-    ok "Block schon vorhanden"
+    ok "block already present"
 else
     cat >> "$ZSHRC" <<'ZBLOCK'
 
@@ -126,15 +125,15 @@ export STARSHIP_CONFIG="$HOME/.config/starship.toml"
 eval "$(starship init zsh)"
 # <<< lyx-theme <<<
 ZBLOCK
-    ok "Block ergaenzt"
+    ok "block added"
 fi
 
-# --- Feststelltaste -> Escape ----------------------------------------------
-# hidutil ist ein Bordmittel, kein Treiber. Wirkt sofort, ueberlebt aber
-# keinen Neustart — deshalb der LaunchAgent.
-info "Feststelltaste auf Escape"
+# --- Caps Lock -> Escape ----------------------------------------------------
+# hidutil ships with macOS, it is not a driver. Takes effect immediately but
+# does not survive a reboot, hence the LaunchAgent.
+info "Caps Lock to Escape"
 HIDUTIL_MAP='{"UserKeyMapping":[{"HIDKeyboardModifierMappingSrc":0x700000039,"HIDKeyboardModifierMappingDst":0x700000029}]}'
-hidutil property --set "$HIDUTIL_MAP" >/dev/null && ok "sofort aktiv"
+hidutil property --set "$HIDUTIL_MAP" >/dev/null && ok "active now"
 
 mkdir -p "$LAUNCH_AGENTS"
 cat > "$AGENT_PLIST" <<PLIST
@@ -159,31 +158,31 @@ cat > "$AGENT_PLIST" <<PLIST
 </plist>
 PLIST
 
-plutil -lint "$AGENT_PLIST" >/dev/null || die "LaunchAgent-plist ist kaputt"
+plutil -lint "$AGENT_PLIST" >/dev/null || die "the LaunchAgent plist is malformed"
 launchctl bootout "gui/$UID/$AGENT_LABEL" 2>/dev/null || true
-launchctl bootstrap "gui/$UID" "$AGENT_PLIST" && ok "LaunchAgent $AGENT_LABEL geladen"
+launchctl bootstrap "gui/$UID" "$AGENT_PLIST" && ok "LaunchAgent $AGENT_LABEL loaded"
 
-# --- macOS-Einstellungen ----------------------------------------------------
-# Sonst liegt die native Leiste ueber der SketchyBar und beide sind halb sichtbar.
-info "macOS-Menueleiste ausblenden"
-defaults write NSGlobalDomain _HIHideMenuBar -bool true && ok "_HIHideMenuBar=true (wirkt nach Ab-/Anmeldung)"
+# --- macOS settings ---------------------------------------------------------
+# Otherwise Apple's menu bar sits on top of SketchyBar and both are half visible.
+info "Hiding the macOS menu bar"
+defaults write NSGlobalDomain _HIHideMenuBar -bool true && ok "_HIHideMenuBar=true (applies after re-login)"
 
-# Liquid Glass (macOS 26+) legt Milchglas ueber SketchyBar und Fensterraender
-# und wischt Osaka Jade weich. Der Schalter dafuer heisst reduceTransparency.
-info "Liquid Glass abschalten"
-defaults write com.apple.universalaccess reduceTransparency -bool true && ok "reduceTransparency=true (wirkt nach Ab-/Anmeldung)"
+# Liquid Glass (macOS 26+) puts frosted glass over the bar and the window
+# borders and washes out Osaka Jade. reduceTransparency turns it off.
+info "Turning off Liquid Glass"
+defaults write com.apple.universalaccess reduceTransparency -bool true && ok "reduceTransparency=true (applies after re-login)"
 
-# --- Dienste ----------------------------------------------------------------
-info "Dienste starten"
+# --- Services ---------------------------------------------------------------
+info "Starting services"
 brew services restart sketchybar >/dev/null && ok "sketchybar"
 brew services restart borders    >/dev/null && ok "borders"
 
 if pgrep -xq AeroSpace; then
-    aerospace reload-config && ok "AeroSpace neu geladen"
+    aerospace reload-config && ok "AeroSpace reloaded"
 else
-    open -a AeroSpace && ok "AeroSpace gestartet"
+    open -a AeroSpace && ok "AeroSpace started"
 fi
 
 echo
-info "Fertig. Was du noch selbst machen musst, steht in SETUP.md."
-info "AeroSpace braucht beim ersten Start die Bedienungshilfen-Freigabe."
+info "Done. What you still have to do yourself is in SETUP.md."
+info "AeroSpace needs the Accessibility permission on first launch."

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# Hebt den fokussierten AeroSpace-Workspace hervor. $1 = Workspace-ID.
-# FOCUSED_WORKSPACE kommt vom Trigger; beim ersten Zeichnen fragen wir AeroSpace direkt.
+# Highlights the focused AeroSpace workspace. $1 = workspace ID.
+# FOCUSED_WORKSPACE comes from the trigger; on the first draw we ask AeroSpace.
 
 source "$CONFIG_DIR/colors.sh"
 

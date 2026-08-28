@@ -1,5 +1,5 @@
-# lyx-theme — Starship (Osaka Jade)
-# Doku: https://starship.rs/config/
+# lyx-theme - Starship (Osaka Jade)
+# Docs: https://starship.rs/config/
 
 "$schema" = 'https://starship.rs/config-schema.json'
 
@@ -21,7 +21,7 @@ palette = 'osakajade'
 
 add_newline = true
 
-# Quelle: basecamp/omarchy themes/osaka-jade/colors.toml
+# Source: basecamp/omarchy themes/osaka-jade/colors.toml
 [palettes.osakajade]
 bg0 = '#23372b'
 bg1 = '#111c18'

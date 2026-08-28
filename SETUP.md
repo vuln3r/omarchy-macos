@@ -1,225 +1,96 @@
-# lyx-theme
+# Manual setup
 
-Omarchy-artiges Setup für macOS. Getestet auf MacBook Pro 16" M1 Max, macOS 27.0.
+`install.sh` does everything that can be scripted. What is left is here.
+Keybindings and everything else are in [README.md](README.md).
 
-| Baustein | Rolle | Config |
-|---|---|---|
-| [AeroSpace](https://nikitabobko.github.io/AeroSpace/) | Tiling-WM | `aerospace.toml` → `~/.aerospace.toml` |
-| [SketchyBar](https://felixkratz.github.io/SketchyBar/) | Statusleiste | `sketchybar/` → `~/.config/sketchybar` |
-| [JankyBorders](https://github.com/FelixKratz/JankyBorders) | Fensterrahmen | `bordersrc` → `~/.config/borders/bordersrc` |
-| [Ghostty](https://ghostty.org) | Terminal | `ghostty/config` → `~/.config/ghostty/config` |
-| [Starship](https://starship.rs) | Prompt | `starship.toml` → `~/.config/starship.toml` |
+## After the install
 
-Farbschema durchgehend **Osaka Jade** (aus [Omarchy](https://omarchy.org), Quelle:
-`basecamp/omarchy` → `themes/osaka-jade/colors.toml`), Schrift **JetBrainsMono Nerd Font**.
-Alle Configs liegen hier und sind nach `~` verlinkt — Bearbeiten hier wirkt sofort.
+### 1. Log out and back in
 
----
+Two settings are written by `install.sh` but only read at login:
 
-## Tastenkürzel
+- `_HIHideMenuBar` - hides Apple's menu bar, which would otherwise sit on top
+  of SketchyBar. On a display with a notch this looks especially bad.
+- `reduceTransparency` - turns off Liquid Glass (macOS 26+), which puts frosted
+  glass over the bar and the window borders and washes out the palette.
 
-`alt` ist die **⌥ Option**-Taste. AeroSpace greift diese Kombinationen systemweit ab,
-sie erreichen die darunterliegende App also nicht mehr.
+If you would rather not wait, both switches exist in the UI and take effect
+immediately:
 
-### Fenster & Fokus
+> System Settings -> Control Center -> Menu Bar -> Automatically hide
+> System Settings -> Accessibility -> Display -> Reduce transparency
 
-| Kürzel | Wirkung |
-|---|---|
-| `alt` + `H` `J` `K` `L` | Fokus nach links / unten / oben / rechts |
-| `alt` + `←` `↓` `↑` `→` | dasselbe mit Pfeiltasten |
-| `alt` `shift` + `H` `J` `K` `L` | Fenster verschieben |
-| `alt` `shift` + `←` `↓` `↑` `→` | dasselbe mit Pfeiltasten |
-| `alt` + `-` | Fenster verkleinern |
-| `alt` + `=` | Fenster vergrößern |
-| `alt` + `F` | Vollbild an/aus |
-| `alt` `shift` + `Q` | Fenster schließen |
+### 2. Accessibility for AeroSpace
 
-### Layout
+> System Settings -> Privacy & Security -> Accessibility -> **AeroSpace**
 
-| Kürzel | Wirkung |
-|---|---|
-| `alt` + `/` | Kacheln horizontal ↔ vertikal |
-| `alt` + `,` | Akkordeon horizontal ↔ vertikal |
-| `alt` `shift` + `Leertaste` | schwebend ↔ gekachelt |
+Without this permission AeroSpace cannot move a single window. macOS asks on
+first launch.
 
-### Workspaces
+## Optional
 
-| Kürzel | Wirkung |
-|---|---|
-| `alt` + `1`…`9` | Workspace wechseln |
-| `alt` `shift` + `1`…`9` | Fenster auf Workspace schieben |
-| `alt` + `Tab` | zurück zum vorigen Workspace |
-| `alt` `shift` + `Tab` | Workspace auf nächsten Monitor schieben |
-| `alt` `ctrl` + `←` `→` | Monitor wechseln |
-| Klick auf Zahl in der Leiste | Workspace wechseln |
+### Reduce motion
 
-### Programme
+> System Settings -> Accessibility -> Display -> **Reduce motion**
 
-| Kürzel | Wirkung |
-|---|---|
-| `alt` + `Enter` | Ghostty öffnen |
-| `alt` + `B` | Google Chrome öffnen |
+Removes the fade animation when switching workspaces. Without it, tiling feels
+sluggish. Purely a matter of taste.
 
-### Service-Modus — `alt` `shift` + `;`
+### Ghostty as the default terminal
 
-| Taste | Wirkung |
-|---|---|
-| `Esc` | Config neu laden, zurück |
-| `R` | Layout-Baum zurücksetzen |
-| `F` | schwebend ↔ gekachelt |
-| `Backspace` | alle Fenster außer dem aktuellen schließen |
-| `alt` `shift` + `H` `J` `K` `L` | Fenster zusammenfassen (join) |
+Open Ghostty once -> Ghostty -> Settings -> set as default.
 
-### Resize-Modus — `alt` + `R`
+### A launcher
 
-| Taste | Wirkung |
-|---|---|
-| `H` / `L` | schmaler / breiter |
-| `K` / `J` | niedriger / höher |
-| `B` | Größen ausgleichen |
-| `Esc` oder `Enter` | zurück |
+Raycast is the macOS counterpart to Omarchy's launcher. The hotkey belongs to
+Raycast itself, AeroSpace cannot set it:
 
-### Tastatur
+> Raycast -> Settings -> General -> Raycast Hotkey -> **option + space**
 
-| Taste | Wirkung |
-|---|---|
-| `Feststelltaste` | **Escape** (via `hidutil`, überlebt Neustart per LaunchAgent) |
+`option + space` sits closer to Omarchy's `Super`+`Space` than `command +
+space` does, and leaves Spotlight alone. The palette for a matching theme is in
+the README.
 
----
+## Leave this alone
 
-## Das musst du noch selbst machen
+**Do not turn on "Automatically rearrange Spaces"** (System Settings -> Desktop
+& Dock). macOS renumbers Spaces underneath AeroSpace when it is on. Check with:
 
-Fünf Dinge lassen sich nicht skripten. Stand geprüft am 28.08.2026 auf diesem Mac —
-was schon passt, steht unten unter „erledigt".
+```sh
+defaults read com.apple.dock mru-spaces   # must be 0
+```
 
-### 1. Menüleiste automatisch ausblenden — **von install.sh gesetzt, wirkt nach Neuanmeldung**
+**Do not remap Caps Lock in System Settings.** `install.sh` maps it to Escape
+via `hidutil`. If you also set something under Keyboard -> Modifier Keys, the
+system setting wins and the Escape mapping is gone.
 
-`install.sh` setzt `defaults write NSGlobalDomain _HIHideMenuBar -bool true`.
-Der WindowServer liest das erst beim Anmelden, also einmal ab- und anmelden.
-Wer nicht warten will, klickt es an derselben Stelle von Hand — das wirkt sofort:
+## Multiple monitors
 
-> Systemeinstellungen → Kontrollzentrum → Menüleiste automatisch ein-/ausblenden → **Immer**
-
-Sonst liegen Apples Menüleiste und SketchyBar übereinander. Am 16"-Display mit
-Notch wird das sonst besonders unschön.
-
-### 2. Bewegung reduzieren — **offen, optional**
-
-> Systemeinstellungen → Bedienungshilfen → Anzeige → **Bewegung reduzieren**
-
-Nimmt die Überblend-Animation beim Workspace-Wechsel raus. Ohne das wirkt das
-Tiling träge. Reine Geschmackssache.
-
-### 3. Ghostty als Standardterminal — **offen, optional**
-
-Ghostty einmal öffnen → Ghostty → Einstellungen → als Standard setzen.
-
-### 4. Raycast als Launcher — **offen**
-
-Raycast ist das macOS-Gegenstück zu Omarchys Launcher. Der Hotkey gehört Raycast
-selbst, AeroSpace kann ihn nicht setzen:
-
-> Raycast → Settings → General → Raycast Hotkey → **⌥ Leertaste**
-
-`⌥ Leertaste` statt `⌘ Leertaste` liegt näher an Omarchys `Super`+`Space` und
-lässt Spotlight in Ruhe. Farblich passend wird Raycast über
-[themes.ray.so](https://themes.ray.so) — Palette steht unten unter „Farben".
-
-### 5. Beim ersten Start auf einem anderen Mac: Bedienungshilfen
-
-> Systemeinstellungen → Datenschutz & Sicherheit → Bedienungshilfen → **AeroSpace**
-
-Ohne diese Freigabe kann AeroSpace keine Fenster bewegen.
-
-### Erledigt — nichts zu tun
-
-- **Bedienungshilfen für AeroSpace**: bereits erteilt, verifiziert (22 Fenster sichtbar).
-- **Spaces automatisch umsortieren**: bereits aus (`mru-spaces = 0`). Muss aus bleiben,
-  sonst nummeriert macOS die Spaces unter AeroSpace um.
-- **Feststelltaste in den Systemeinstellungen**: kein Override gesetzt, kollidiert also
-  nicht mit `hidutil`. Falls du dort später etwas einstellst, gewinnt die
-  Systemeinstellung und die Escape-Belegung ist weg.
-
----
-
-## Monitore
-
-`aerospace.toml`, Abschnitt `[workspace-to-monitor-force-assignment]`.
-Die Liste je Workspace ist eine Prioritätenliste — der erste Treffer gewinnt,
-`main` trifft immer und ist der Sicherheitsanker.
-
-| Situation | Was passiert |
-|---|---|
-| **Wien**, BenQ RD320U | 1–6 auf dem BenQ. Bei geschlossenem Deckel rutschen 7–9 über `main` ebenfalls dorthin. |
-| **Bihac**, Odyssey G9 | greift über `.*Odyssey.*` bzw. `.*Samsung.*`, sonst über `main`. |
-| **Unterwegs**, nur intern | alles auf `main` = internes Display. |
-
-Bestätigt ist nur der BenQ (`aerospace list-monitors` → `1 | BenQ RD320U`).
-
-**In Bihac einmal prüfen:**
+Workspaces are not pinned to specific monitors out of the box - every workspace
+follows whichever monitor has focus. If you want a fixed split, add a section
+to `aerospace.toml`. Get your monitor names first:
 
 ```sh
 aerospace list-monitors
 ```
 
-Steht dort weder `Odyssey` noch `Samsung` im Namen, den echten Namen in
-`aerospace.toml` bei den Workspaces 1–6 ergänzen. Auch ohne das funktioniert
-alles — dann greift eben `main`, und du hast nur keine feste Aufteilung.
+Then match on them. The list per workspace is a priority list, first match
+wins, and `main` always matches, so it works as the safety net:
 
-Der 32:9 bekommt durch `default-root-container-orientation = 'auto'` automatisch
-horizontales Splitting, da ist nichts weiter zu tun.
-
----
-
-## Bedienen
-
-```sh
-aerospace reload-config              # Config neu laden (auch alt+shift+; dann Esc)
-brew services restart sketchybar     # Leiste neu starten
-brew services restart borders        # Rahmen neu starten
+```toml
+[workspace-to-monitor-force-assignment]
+1 = ['.*Studio Display.*', 'main']
+2 = ['.*Studio Display.*', 'main']
+3 = 'main'
 ```
 
-`auto-reload-config = true` ist gesetzt: Änderungen an `aerospace.toml` greifen
-beim Speichern von selbst.
+With the lid closed, workspaces whose monitor is gone fall through to `main`.
+An ultrawide gets horizontal splitting automatically through
+`default-root-container-orientation = 'auto'`, so there is nothing else to do.
 
-## Deinstallieren
+## Tyme
 
-```sh
-cd ~/lyx-theme
-./uninstall.sh              # Configs, LaunchAgent, Tastenbelegung zurück
-./uninstall.sh --packages   # zusätzlich die Homebrew-Pakete entfernen
-```
-
-Dreht alles zurück: Symlinks weg, gesicherte Originale aus `.backup/` zurück,
-LaunchAgent entladen und gelöscht, `hidutil` auf Werkszustand, Starship-Block
-aus der `.zshrc` (Sicherungskopie als `.zshrc.lyx-bak`). Die Homebrew-Pakete
-bleiben stehen, außer du gibst `--packages` an. `jq` wird nie entfernt.
-
-Kein SIP-Eingriff, keine Kernel-Extension, kein `sudo` — weder bei der
-Installation noch beim Entfernen.
-
----
-
-## Farben — Osaka Jade
-
-Aus `basecamp/omarchy`, `themes/osaka-jade/colors.toml`. Wer das Theme woanders
-nachbauen will (Raycast, VS Code, …), nimmt diese Werte:
-
-| Rolle | Hex |
-|---|---|
-| Hintergrund | `#111c18` |
-| Hintergrund dunkler | `#0c1512` |
-| Hintergrund heller | `#23372b` |
-| Vordergrund | `#c1c497` |
-| Akzent (Jade) | `#509475` |
-| Auswahl | `#32473b` |
-| gedämpft | `#53685b` |
-| Rot | `#ff5345` |
-| Grün | `#549e6a` |
-| Gelb | `#e5c736` |
-| Cyan | `#2dd5b7` |
-| Magenta | `#d2689c` |
-| Orange | `#a2734b` |
-
-Zentral gepflegt in `sketchybar/colors.sh` — SketchyBar und die Plugins lesen
-beide von dort, sonst driften Leiste und Workspace-Hervorhebung auseinander.
+The time tracking item only does something if [Tyme](https://www.tyme-app.com)
+is installed and running; otherwise it hides itself. On the first query macOS
+asks whether the terminal or SketchyBar may control Tyme - that prompt has to
+be accepted once, or the item stays on the pause icon.

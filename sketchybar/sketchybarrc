@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# lyx-theme — SketchyBar (Osaka Jade)
-# Doku: https://felixkratz.github.io/SketchyBar/
+# lyx-theme - SketchyBar (Osaka Jade)
+# Docs: https://felixkratz.github.io/SketchyBar/
 
 PLUGIN_DIR="$CONFIG_DIR/plugins"
 
@@ -9,13 +9,13 @@ source "$CONFIG_DIR/colors.sh"
 FONT="JetBrainsMono Nerd Font"
 
 # --- Bar --------------------------------------------------------------------
-# notch_*: SketchyBar erkennt das Notch-Display an seiner Hoehe und laesst
-# zentrierte Items dort ausweichen. Am externen Monitor (keine Notch) bleibt
-# die Uhr exakt mittig — das ist das if/else, ohne eigenes Skript.
-# ponytail: notch_display_height ist der 16"-Standardwert und UNGEPRUEFT,
-# solange der Deckel zu ist. Stimmt die Hoehe nicht, greift die Ausweich-
-# logik am Laptop nicht. Nachmessen: aerospace list-monitors bei offenem
-# Deckel, bzw. 'UI Looks like' aus system_profiler SPDisplaysDataType.
+# notch_*: SketchyBar recognises the notched display by its height and makes
+# centered items dodge the notch there. On an external monitor (no notch) the
+# clock stays exactly centered - that is the if/else, without a script.
+# ponytail: notch_display_height is the 16" default value and UNVERIFIED as
+# long as the lid is closed. If the height is wrong the dodging never kicks in
+# on the laptop. Measure it with the lid open: 'UI Looks like' from
+# system_profiler SPDisplaysDataType.
 sketchybar --bar height=32 \
                  notch_width=200 \
                  notch_display_height=1117 \
@@ -42,7 +42,7 @@ sketchybar --default updates=when_shown \
                      background.color=$ITEM_BG \
                      background.drawing=off
 
-# --- Links: Apple-Menue -----------------------------------------------------
+# --- Left: Apple menu -------------------------------------------------------
 sketchybar --add item lyx_logo left \
            --set lyx_logo icon="" \
                           icon.font="$FONT:Bold:16.0" \
@@ -51,13 +51,13 @@ sketchybar --add item lyx_logo left \
                           padding_right=10 \
                           click_script="open -a 'System Settings'"
 
-# --- Links: AeroSpace-Workspaces --------------------------------------------
-# 1-5, passend zu persistent-workspaces in aerospace.toml.
+# --- Left: AeroSpace workspaces ---------------------------------------------
+# 1-5, matching persistent-workspaces in aerospace.toml.
 sketchybar --add event aerospace_workspace_change
 
 for sid in 1 2 3 4 5; do
-    # --set MUSS vor --subscribe stehen, sonst haengt die Subscription an einem
-    # Item, das noch kein script hat, und der Event laeuft ins Leere.
+    # --set MUST come before --subscribe, otherwise the subscription attaches
+    # to an item that has no script yet and the event goes nowhere.
     sketchybar --add item space.$sid left \
                --set space.$sid \
                      icon="$sid" \
@@ -70,7 +70,7 @@ for sid in 1 2 3 4 5; do
                --subscribe space.$sid aerospace_workspace_change
 done
 
-# --- Links: Fokussierte App -------------------------------------------------
+# --- Left: focused app ------------------------------------------------------
 sketchybar --add item front_app left \
            --set front_app icon.drawing=off \
                            label.font="$FONT:Bold:13.0" \
@@ -79,15 +79,15 @@ sketchybar --add item front_app left \
                            script="$PLUGIN_DIR/front_app.sh" \
            --subscribe front_app front_app_switched
 
-# --- Links: Tyme-Zeiterfassung ----------------------------------------------
-# Zeigt Projekt + Laufzeit, solange ein Timer laeuft. Klick oeffnet Tyme.
+# --- Left: Tyme time tracking -----------------------------------------------
+# Shows project and elapsed time while a timer runs. Click opens Tyme.
 sketchybar --add item tyme left \
            --set tyme update_freq=30 \
                       padding_left=12 \
                       click_script="open -a Tyme" \
                       script="$PLUGIN_DIR/tyme.sh"
 
-# --- Rechts: Uhr ------------------------------------------------------------
+# --- Center: clock ----------------------------------------------------------
 sketchybar --add item clock center \
            --set clock icon="" \
                        icon.color=$ACCENT \
@@ -95,28 +95,27 @@ sketchybar --add item clock center \
                        update_freq=15 \
                        script="$PLUGIN_DIR/clock.sh"
 
-# --- Rechts: Batterie -------------------------------------------------------
+# --- Right: battery ---------------------------------------------------------
 sketchybar --add item battery right \
            --set battery update_freq=60 \
                          padding_right=6 \
                          script="$PLUGIN_DIR/battery.sh" \
            --subscribe battery power_source_change system_woke
 
-# --- Rechts: Lautstaerke ----------------------------------------------------
+# --- Right: volume ----------------------------------------------------------
 sketchybar --add item volume right \
            --set volume padding_right=6 \
                         script="$PLUGIN_DIR/volume.sh" \
            --subscribe volume volume_change
 
-# --- Rechts: RAM ------------------------------------------------------------
-# Bei LM Studio neben Xcode der Wert, der zuerst weh tut. Faerbt sich ab 60%
-# gelb, ab 80% rot.
+# --- Right: memory ----------------------------------------------------------
+# Turns yellow above 60% and red above 80%.
 sketchybar --add item memory right \
            --set memory update_freq=15 \
                         padding_right=6 \
                         script="$PLUGIN_DIR/memory.sh"
 
-# --- Rechts: WLAN -----------------------------------------------------------
+# --- Right: Wi-Fi -----------------------------------------------------------
 sketchybar --add item wifi right \
            --set wifi update_freq=30 \
                       padding_right=6 \

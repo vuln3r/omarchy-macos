@@ -1,39 +1,39 @@
 # lyx-theme
 
-Ein Tiling-Setup für macOS in **Osaka Jade** — Fenster kacheln sich selbst,
-eine eigene Statusleiste ersetzt Apples Menüleiste, und alles trägt dieselbe
-Palette. Omarchy-Idee, macOS-Umsetzung.
+A tiling setup for macOS in **Osaka Jade** - windows tile themselves, a custom
+status bar replaces Apple's menu bar, and everything shares one palette.
+Omarchy's idea, built for macOS.
 
-> Getestet auf MacBook Pro 16" M1 Max, macOS 27.0.
+> Tested on a 16" MacBook Pro (M1 Max), macOS 27.0.
 
 ```
-   ┌─ SketchyBar ──────────────────────────────────────────────────────┐
-   │ 1 2 3 4 5  Ghostty  ▶ APA: Maintenance 2:34   Fri 28.08   68% 80% │
-   ├──────────────────────────────┬────────────────────────────────────┤
-   │                              │                                    │
-   │           Ghostty            │             Chrome                 │
-   │                              │                                    │
-   └──────────────────────────────┴────────────────────────────────────┘
-      JankyBorders zeichnet den Jade-Rahmen ums aktive Fenster
+   +- SketchyBar --------------------------------------------------------+
+   | 1 2 3 4 5  Ghostty  > Acme: Refactor 2:34   Fri 28.08   68% 80%     |
+   +------------------------------+--------------------------------------+
+   |                              |                                      |
+   |           Ghostty            |               Chrome                 |
+   |                              |                                      |
+   +------------------------------+--------------------------------------+
+      JankyBorders draws the jade frame around the focused window
 ```
 
-Links die Workspaces, die fokussierte App und der laufende Tyme-Timer, mittig
-die Uhr, rechts RAM, Lautstärke, Batterie und WLAN.
+Workspaces, the focused app and the running timer on the left, the clock in the
+middle, memory, volume, battery and Wi-Fi on the right.
 
-## Woraus es besteht
+## What it is made of
 
-| Baustein | Rolle | Config |
+| Piece | Role | Config |
 |---|---|---|
-| [AeroSpace](https://nikitabobko.github.io/AeroSpace/) | Tiling-WM | `aerospace.toml` → `~/.aerospace.toml` |
-| [SketchyBar](https://felixkratz.github.io/SketchyBar/) | Statusleiste | `sketchybar/` → `~/.config/sketchybar` |
-| [JankyBorders](https://github.com/FelixKratz/JankyBorders) | Fensterrahmen | `bordersrc` → `~/.config/borders/bordersrc` |
-| [Ghostty](https://ghostty.org) | Terminal | `ghostty/config` → `~/.config/ghostty/config` |
-| [Starship](https://starship.rs) | Prompt | `starship.toml` → `~/.config/starship.toml` |
+| [AeroSpace](https://nikitabobko.github.io/AeroSpace/) | tiling WM | `aerospace.toml` -> `~/.aerospace.toml` |
+| [SketchyBar](https://felixkratz.github.io/SketchyBar/) | status bar | `sketchybar/` -> `~/.config/sketchybar` |
+| [JankyBorders](https://github.com/FelixKratz/JankyBorders) | window borders | `bordersrc` -> `~/.config/borders/bordersrc` |
+| [Ghostty](https://ghostty.org) | terminal | `ghostty/config` -> `~/.config/ghostty/config` |
+| [Starship](https://starship.rs) | prompt | `starship.toml` -> `~/.config/starship.toml` |
 
-Alles wird nach `~` **verlinkt**, nicht kopiert — eine Änderung hier wirkt sofort.
-`aerospace.toml` lädt sich sogar beim Speichern selbst neu.
+Everything is **symlinked** into `~`, not copied, so editing here takes effect
+right away. `aerospace.toml` even reloads itself on save.
 
-## Installieren
+## Install
 
 ```sh
 git clone <repo> ~/lyx-theme
@@ -41,86 +41,86 @@ cd ~/lyx-theme
 ./install.sh
 ```
 
-Braucht [Homebrew](https://brew.sh), sonst nichts. Kein `sudo`, kein SIP-Eingriff,
-keine Kernel-Extension. Fehlende Pakete installiert das Skript selbst, vorhandene
-Configs wandern vorher nach `.backup/`.
+Needs [Homebrew](https://brew.sh) and nothing else. No `sudo`, no SIP changes,
+no kernel extensions. Missing packages are installed for you, and existing
+configs are moved to `.backup/` first.
 
-Danach **einmal ab- und anmelden** — zwei macOS-Einstellungen greifen erst dann:
-die ausgeblendete Menüleiste und das abgeschaltete Liquid Glass.
+Afterwards **log out and back in once** - two macOS settings only take effect
+then: the hidden menu bar and the disabled Liquid Glass.
 
-Beim ersten Start auf einem neuen Mac fragt AeroSpace nach der
-Bedienungshilfen-Freigabe. Ohne die kann es keine Fenster bewegen.
+On a new Mac, AeroSpace asks for the Accessibility permission on first launch.
+Without it, it cannot move windows.
 
-Was sich nicht skripten lässt (Raycast-Hotkey, Ghostty als Standardterminal),
-steht in **[SETUP.md](SETUP.md)**.
+Whatever cannot be scripted (launcher hotkey, Ghostty as the default terminal)
+is listed in **[SETUP.md](SETUP.md)**.
 
-## Tastenkürzel
+## Keybindings
 
-`alt` ist die **⌥ Option**-Taste. AeroSpace fängt diese Kombinationen systemweit
-ab — sie erreichen die darunterliegende App nicht mehr.
+`alt` is the **option** key. AeroSpace grabs these combinations system wide, so
+they no longer reach the app underneath.
 
-### Fokus & Fenster
+### Focus and windows
 
-| Kürzel | Wirkung |
+| Keys | Action |
 |---|---|
-| `alt` + `H` `J` `K` `G` | Fokus nach links / unten / oben / rechts |
-| `alt` `shift` + `H` `J` `K` `G` | Fenster in diese Richtung verschieben |
-| `alt` + `-` / `=` | Fenster verkleinern / vergrößern |
-| `alt` + `/` | Kacheln horizontal ↔ vertikal |
-| `alt` `shift` + `Leertaste` | schwebend ↔ gekachelt |
-| `alt` + `F` | Vollbild an/aus |
-| `alt` `shift` + `Q` | Fenster schließen |
+| `alt` + `H` `J` `K` `G` | focus left / down / up / right |
+| `alt` `shift` + `H` `J` `K` `G` | move the window that way |
+| `alt` + `-` / `=` | shrink / grow the window |
+| `alt` + `/` | tiles horizontal <-> vertical |
+| `alt` `shift` + `space` | floating <-> tiling |
+| `alt` + `F` | fullscreen |
+| `alt` `shift` + `Q` | close window |
 
-### Programme
+### Apps
 
-| Kürzel | Wirkung |
+| Keys | Action |
 |---|---|
-| `alt` + `Enter` | neues Ghostty-Fenster |
+| `alt` + `Enter` | new Ghostty window |
 | `alt` + `B` | Google Chrome |
 | `alt` + `S` | Slack |
 | `alt` + `C` | Claude |
 
-Die App springt dabei auf ihren Workspace mit (Slack → 4, Claude → 5), weil die
-Window-Rules unten sie ohnehin dorthin schicken.
+The app jumps to its workspace along with it, because the window rules below
+send it there anyway.
 
-> **Tastenwahl auf österreichischem Layout:** AeroSpace greift die Kombination
-> systemweit ab, das Zeichen darunter ist damit weg. `⌥L` ist deshalb bewusst
-> *nicht* belegt — das ist das **@**. Aus demselben Grund liegt „Fokus rechts"
-> auf `G` statt auf `L`. `⌥S` (‚) und `⌥C` (ç) sind verzichtbar.
-> `Y` und `Z` besser meiden: `key-mapping.preset = 'qwerty'` meint die
-> *physische* US-Position, und QWERTZ vertauscht genau diese beiden.
+> **Picking keys on a non-US layout:** AeroSpace grabs the combination system
+> wide, so the character underneath is gone. On a German or Austrian layout
+> `alt-L` is deliberately unbound - that one types **@**. For the same reason
+> "focus right" sits on `G` rather than `L`. Avoid `Y` and `Z` as well:
+> `key-mapping.preset = 'qwerty'` refers to the *physical* US position, and
+> QWERTZ swaps exactly those two.
 
 ### Workspaces
 
-| Kürzel | Wirkung |
+| Keys | Action |
 |---|---|
-| `alt` + `1` … `5` | Workspace wechseln |
-| `alt` `shift` + `1` … `5` | Fenster auf Workspace schieben |
-| `alt` + `Tab` | zurück zum vorigen Workspace |
-| `alt` `shift` + `Tab` | Workspace auf nächsten Monitor schieben |
-| Klick auf die Zahl in der Leiste | Workspace wechseln |
+| `alt` + `1` ... `5` | switch workspace |
+| `alt` `shift` + `1` ... `5` | move window to workspace |
+| `alt` + `Tab` | back to the previous workspace |
+| `alt` `shift` + `Tab` | move workspace to the next monitor |
+| click a number in the bar | switch workspace |
 
-### Service-Modus — `alt` `shift` + `;`
+### Service mode - `alt` `shift` + `;`
 
-| Taste | Wirkung |
+| Key | Action |
 |---|---|
-| `Esc` | Config neu laden, zurück |
-| `R` | Layout-Baum zurücksetzen |
-| `F` | schwebend ↔ gekachelt |
-| `Backspace` | alle Fenster außer dem aktuellen schließen |
-| `alt` `shift` + `H` `J` `K` `L` | Fenster zusammenfassen (join) |
+| `Esc` | reload the config, leave the mode |
+| `R` | reset the layout tree |
+| `F` | floating <-> tiling |
+| `Backspace` | close every window but the current one |
+| `alt` `shift` + `H` `J` `K` `L` | join windows |
 
-### Tastatur
+### Keyboard
 
-| Taste | Wirkung |
+| Key | Action |
 |---|---|
-| `Feststelltaste` | **Escape** — via `hidutil`, überlebt den Neustart per LaunchAgent |
+| `Caps Lock` | **Escape** - via `hidutil`, survives a reboot through a LaunchAgent |
 
-## Fenster sortieren sich selbst
+## Windows sort themselves
 
-`aerospace.toml` schickt jede App beim Öffnen auf ihren Workspace:
+`aerospace.toml` sends every app to its own workspace as it opens:
 
-| WS | Inhalt |
+| WS | Contents |
 |---|---|
 | **1** | Cursor, VS Code, Xcode, GitKraken |
 | **2** | Ghostty, Warp, iTerm, Terminal |
@@ -128,11 +128,11 @@ Window-Rules unten sie ohnehin dorthin schicken.
 | **4** | Slack, Mail, Spark, Messages, Calendar |
 | **5** | Claude, ChatGPT, Grok, LM Studio |
 
-Utility-Fenster laufen bewusst **floating**: System Settings, Activity Monitor,
-Bitwarden, NordVPN, Cisco Secure Client, Finder, Preview, Acrobat. Die lassen
-sich nicht schmal genug ziehen und würden das Kacheln sprengen.
+Utility windows deliberately stay **floating**: System Settings, Activity
+Monitor, password managers, VPN clients, Finder, Preview. They refuse to get
+narrow enough and would break tiling.
 
-Eine App fehlt? Bundle-ID holen und einen Block in `aerospace.toml` ergänzen:
+Missing an app? Grab its bundle ID and add a block to `aerospace.toml`:
 
 ```sh
 aerospace list-windows --focused --format '%{app-bundle-id}'
@@ -144,68 +144,72 @@ if.app-id = 'com.example.app'
 run = 'move-node-to-workspace 3'
 ```
 
-Die Regeln greifen nur bei **neu erkannten** Fenstern. Schon offene Fenster
-sortieren sich erst nach einem Neustart von AeroSpace ein.
+The rules only apply to **newly detected** windows. Windows that are already
+open sort themselves once AeroSpace restarts.
 
-## Zeiterfassung
+## Time tracking
 
-Läuft in [Tyme](https://www.tyme-app.com) ein Timer, zeigt die Leiste
-`Projekt: Aufgabe h:mm`. Klick öffnet Tyme, ohne Timer bleibt ein gedämpftes
-Pause-Symbol, und ist Tyme gar nicht offen, verschwindet das Item.
+If a timer runs in [Tyme](https://www.tyme-app.com), the bar shows
+`Project: Task h:mm`, then the total for today against a daily goal and how
+much is left. Clicking opens Tyme. Without a running timer a dimmed pause icon
+and the day's total remain; if Tyme is not running at all, the item disappears.
 
-Angezeigt wird die **Subtask**, nicht der Task: `trackedTaskIDs` liefert die
-Subtask-ID, der Task steckt in `relatedTaskID`. Wer seine Tasks „Development"
-und „Meetings" nennt und die Arbeit in Subtasks führt, will genau das sehen.
-Ab 24 Zeichen wird gekürzt — die Zahl steht als `maxLen` in
-`sketchybar/plugins/tyme.sh`.
+What is shown is the **subtask**, not the task: `trackedTaskIDs` returns the
+subtask ID while the task sits in `relatedTaskID`. If your tasks are called
+"Development" and "Meetings" and the real work lives in subtasks, that is
+exactly what you want to see. Names are truncated past 24 characters - the
+number is `maxLen` in `sketchybar/plugins/tyme.sh`, the daily goal is
+`GOAL_HOURS` right above it.
 
-## Bedienen
-
-```sh
-aerospace reload-config              # Config neu laden (oder alt+shift+; dann Esc)
-brew services restart sketchybar     # Leiste neu starten
-brew services restart borders        # Rahmen neu starten
-```
-
-## Anpassen
-
-**Farben** liegen zentral in `sketchybar/colors.sh`. SketchyBar *und* seine
-Plugins lesen von dort — Plugins sind eigene Prozesse und sehen die Variablen
-aus `sketchybarrc` nicht, deshalb sourct jedes Plugin die Datei selbst.
-
-**Bar-Höhe** hängt an zwei Stellen zusammen: `--bar height` in
-`sketchybar/sketchybarrc` und `gaps.outer.top` in `aerospace.toml`. Die Bar ist
-`topmost` und reserviert selbst keinen Platz — änderst du die Höhe, muss der
-Gap mit, sonst verdeckt sie die oberen Fenster.
-
-**Fensterrahmen** in `bordersrc`: `width` für die Dicke, `active_color` /
-`inactive_color` für die Farbe. `style` bleibt sinnvollerweise auf `round` —
-macOS rundet Fensterecken seit Big Sur im WindowServer, ein eckiger Rahmen
-läuft an der runden Ecke sichtbar daneben.
-
-## Deinstallieren
+## Day to day
 
 ```sh
-./uninstall.sh              # Configs, LaunchAgent, Tastenbelegung zurück
-./uninstall.sh --packages   # zusätzlich die Homebrew-Pakete
+aerospace reload-config              # reload the config (or alt+shift+; then Esc)
+brew services restart sketchybar     # restart the bar
+brew services restart borders        # restart the borders
 ```
 
-Symlinks weg, Originale aus `.backup/` zurück, LaunchAgent entladen, `hidutil`
-auf Werkszustand, Starship-Block aus der `.zshrc` (Kopie als `.zshrc.lyx-bak`).
-Die macOS-Einstellungen werden gelöscht, nicht auf `false` gesetzt — hattest du
-Menüleiste oder Transparenz schon vorher selbst konfiguriert, ist das danach weg.
+## Tweaking
 
-## Palette — Osaka Jade
+**Colors** live in one place: `sketchybar/colors.sh`. SketchyBar *and* its
+plugins read from there - plugins are separate processes and never see the
+variables from `sketchybarrc`, so every plugin sources the file itself.
 
-| Rolle | Hex | | Rolle | Hex |
+**Bar height** is tied to two places: `--bar height` in
+`sketchybar/sketchybarrc` and `gaps.outer.top` in `aerospace.toml`. The bar is
+`topmost` and reserves no space of its own, so if you change the height the gap
+has to follow, or the bar covers the windows at the top.
+
+**Window borders** live in `bordersrc`: `width` for thickness, `active_color`
+and `inactive_color` for the color. Leave `style` on `round` - macOS has been
+rounding window corners in the WindowServer since Big Sur, and a square border
+visibly misses the rounded corner.
+
+## Uninstall
+
+```sh
+./uninstall.sh              # configs, LaunchAgent, key mapping
+./uninstall.sh --packages   # the Homebrew packages as well
+```
+
+Symlinks removed, originals restored from `.backup/`, LaunchAgent unloaded,
+`hidutil` back to factory state, the Starship block taken out of `.zshrc` (a
+copy is left as `.zshrc.lyx-bak`). The macOS settings are deleted rather than
+set to false - if you had configured the menu bar or transparency yourself
+before, that is gone too.
+
+## Palette - Osaka Jade
+
+| Role | Hex | | Role | Hex |
 |---|---|---|---|---|
-| Hintergrund | `#111c18` | | Rot | `#ff5345` |
-| Hintergrund dunkler | `#0c1512` | | Grün | `#549e6a` |
-| Hintergrund heller | `#23372b` | | Gelb | `#e5c736` |
-| Vordergrund | `#c1c497` | | Cyan | `#2dd5b7` |
-| Akzent (Jade) | `#509475` | | Magenta | `#d2689c` |
-| Auswahl | `#32473b` | | Orange | `#a2734b` |
-| gedämpft | `#53685b` | | | |
+| background | `#111c18` | | red | `#ff5345` |
+| background darker | `#0c1512` | | green | `#549e6a` |
+| background lighter | `#23372b` | | yellow | `#e5c736` |
+| foreground | `#c1c497` | | cyan | `#2dd5b7` |
+| accent (jade) | `#509475` | | magenta | `#d2689c` |
+| selection | `#32473b` | | orange | `#a2734b` |
+| muted | `#53685b` | | | |
 
-Aus [Omarchy](https://omarchy.org), `basecamp/omarchy` →
-`themes/osaka-jade/colors.toml`. Schrift durchgehend **JetBrainsMono Nerd Font**.
+From [Omarchy](https://omarchy.org), `basecamp/omarchy` ->
+`themes/osaka-jade/colors.toml`. Typeface throughout is
+**JetBrainsMono Nerd Font**.

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Ladestand + Symbol. Quelle: pmset (kein Zusatz-Tool noetig).
+# Charge level and icon. Source: pmset, no extra tooling needed.
 
 BATT=$(pmset -g batt)
 PERCENT=$(echo "$BATT" | grep -Eo '[0-9]+%' | head -1 | tr -d '%')

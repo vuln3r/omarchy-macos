@@ -8,11 +8,11 @@ config-version = 2
 
 # You can use it to add commands that run after AeroSpace startup.
 # Available commands : https://nikitabobko.github.io/AeroSpace/commands
-# Beim Start einmal SketchyBar anstossen. exec-on-workspace-change feuert
-# waehrend des Startups nicht, sonst zeigt die Bar nach jedem Login den
-# falschen Workspace. Ohne FOCUSED_WORKSPACE -> plugins/aerospace.sh fragt
-# AeroSpace selbst. ponytail: sleep 2, weil das Einsortieren der Fenster den
-# Fokus noch verschiebt; falls es mal zu frueh feuert, Wert hochdrehen.
+# Nudge SketchyBar once at startup. exec-on-workspace-change does not fire
+# during startup, so without this the bar shows the wrong workspace after
+# every login. Passing no FOCUSED_WORKSPACE makes plugins/aerospace.sh ask
+# AeroSpace itself. ponytail: sleep 2, because sorting the windows in still
+# moves the focus around; raise it if it ever fires too early.
 after-startup-command = [
     'exec-and-forget sleep 2 && /opt/homebrew/bin/sketchybar --trigger aerospace_workspace_change'
 ]
@@ -48,8 +48,8 @@ default-root-container-orientation = 'auto'
 # Fallback value (if you omit the key): on-focused-monitor-changed = []
 on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
 
-# SketchyBar ueber Workspace-Wechsel informieren. Ohne das feuert das Event
-# 'aerospace_workspace_change' nie und der Workspace-Indikator friert ein.
+# Tell SketchyBar about workspace changes. Without this the
+# 'aerospace_workspace_change' event never fires and the indicator freezes.
 exec-on-workspace-change = ['/bin/bash', '-c',
     '/opt/homebrew/bin/sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE=$AEROSPACE_FOCUSED_WORKSPACE'
 ]
@@ -88,9 +88,9 @@ gaps.inner.horizontal = 16
 gaps.inner.vertical =   16
 gaps.outer.left =       16
 gaps.outer.bottom =     16
-gaps.outer.top =        48   # 32 SketchyBar-Hoehe + 16 Rand. Bar ist topmost
-                             # und reserviert selbst keinen Platz. Bar-Hoehe in
-                             # sketchybar/sketchybarrc geaendert? Hier mitziehen.
+gaps.outer.top =        48   # 32 bar height + 16 margin. The bar is topmost
+                             # and reserves no space itself. Changed --bar
+                             # height in sketchybarrc? Change this along.
 gaps.outer.right =      16
 
 # 'main' binding mode declaration
@@ -117,11 +117,11 @@ gaps.outer.right =      16
     # All possible commands: https://nikitabobko.github.io/AeroSpace/commands
 
     # See: https://nikitabobko.github.io/AeroSpace/commands#exec-and-forget
-    # ponytail: 'make new window' quittiert mit einem AppleScript-Fehler (Ghostty
-    # kann das erzeugte Fenster nicht zurueckgeben), oeffnet es aber korrekt in
-    # DERSELBEN Instanz. Das von Ghostty empfohlene 'open -na Ghostty' ist zwar
-    # fehlerfrei, startet aber einen zweiten Ghostty-Prozess. Fehler geht ins
-    # Leere, exec-and-forget liest ihn nicht.
+    # ponytail: 'make new window' answers with an AppleScript error (Ghostty
+    # cannot return the window it created) but opens it correctly in the SAME
+    # instance. The 'open -na Ghostty' that Ghostty itself recommends is error
+    # free but spawns a second Ghostty process. The error goes nowhere,
+    # exec-and-forget never reads it.
     alt-enter = '''exec-and-forget osascript -e 'tell application "Ghostty" to make new window' '''
     alt-b = 'exec-and-forget open -a "Google Chrome"'
     alt-s = 'exec-and-forget open -a Slack'
@@ -132,8 +132,9 @@ gaps.outer.right =      16
     alt-shift-space = 'layout floating tiling'
     alt-f = 'fullscreen'
     alt-shift-q = 'close'
-    # ponytail: accordion raus - lag neben alt-slash und stapelt alle Fenster
-    # uebereinander. Zurueckholen mit: alt-comma = 'layout accordion horizontal vertical'
+    # ponytail: accordion removed - it sat right next to alt-slash and stacks
+    # every window on top of each other. To bring it back:
+    # alt-comma = 'layout accordion horizontal vertical'
 
     # See: https://nikitabobko.github.io/AeroSpace/commands#focus
     alt-h = 'focus left'
@@ -190,14 +191,14 @@ gaps.outer.right =      16
     alt-shift-j = ['join-with down', 'mode main']
     alt-shift-k = ['join-with up', 'mode main']
     alt-shift-l = ['join-with right', 'mode main']
-# ─── Window rules ────────────────────────────────────────────────────────────
-# App landet automatisch auf ihrem Workspace. app-id statt Regex: exakt, und
-# du kannst einen Block loeschen/umhaengen ohne Regex zu debuggen.
-# Neue App einsortieren? Bundle-ID holen mit:
+# --- Window rules -----------------------------------------------------------
+# Every app lands on its own workspace. app-id instead of a regex: exact, and
+# you can delete or move a block without debugging a pattern.
+# Adding an app? Get its bundle ID with:
 #   aerospace list-windows --focused --format '%{app-bundle-id}'
 # See: https://nikitabobko.github.io/AeroSpace/guide#on-window-detected-callback
 
-# --- 1: Code ---
+# --- 1: code ---
 [[on-window-detected]]
 if.app-id = 'com.todesktop.230313mzl4w4u92'  # Cursor
 run = 'move-node-to-workspace 1'
@@ -214,7 +215,7 @@ run = 'move-node-to-workspace 1'
 if.app-id = 'com.axosoft.gitkraken'
 run = 'move-node-to-workspace 1'
 
-# --- 2: Terminal ---
+# --- 2: terminals ---
 [[on-window-detected]]
 if.app-id = 'com.mitchellh.ghostty'
 run = 'move-node-to-workspace 2'
@@ -231,7 +232,7 @@ run = 'move-node-to-workspace 2'
 if.app-id = 'com.apple.Terminal'
 run = 'move-node-to-workspace 2'
 
-# --- 3: Web ---
+# --- 3: browsers ---
 [[on-window-detected]]
 if.app-id = 'com.google.Chrome'
 run = 'move-node-to-workspace 3'
@@ -240,7 +241,7 @@ run = 'move-node-to-workspace 3'
 if.app-id = 'com.apple.Safari'
 run = 'move-node-to-workspace 3'
 
-# --- 4: Kommunikation ---
+# --- 4: communication ---
 [[on-window-detected]]
 if.app-id = 'com.tinyspeck.slackmacgap'  # Slack
 run = 'move-node-to-workspace 4'
@@ -278,8 +279,8 @@ run = 'move-node-to-workspace 5'
 if.app-id = 'ai.elementlabs.lmstudio'
 run = 'move-node-to-workspace 5'
 
-# --- Floating: Utility-Fenster mit Mindestbreite. Genau die haben vorher das
-#     Tiling gesprengt, weil sie sich nicht schmal machen lassen. ---
+# --- Floating: utility windows with a minimum width. These are exactly the
+#     ones that used to break tiling, because they refuse to get narrow. ---
 [[on-window-detected]]
 if.app-id = 'com.apple.systempreferences'  # System Settings
 run = 'layout floating'

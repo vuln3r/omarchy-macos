@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
-# lyx-theme — Deinstallation
-# Dreht alles zurueck, was install.sh angefasst hat.
+# lyx-theme - uninstaller
+# Reverts everything install.sh touched.
 #
-#   ./uninstall.sh              Configs, LaunchAgent, Tastenbelegung zurueck
-#   ./uninstall.sh --packages   zusaetzlich die Homebrew-Pakete entfernen
+#   ./uninstall.sh              configs, LaunchAgent and key mapping
+#   ./uninstall.sh --packages   also remove the Homebrew packages
 #
-# Kein sudo noetig. Die Pakete bleiben standardmaessig stehen — die zu
-# loeschen ist die einzige Aktion hier, die weh tun kann, also nur auf Ansage.
+# No sudo required. The packages stay by default - removing them is the only
+# action here that can hurt, so it only happens on request.
 
 set -euo pipefail
 
@@ -14,7 +14,7 @@ THEME_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 CONFIG_DIR="$HOME/.config"
 BACKUP_DIR="$THEME_DIR/.backup"
 LAUNCH_AGENTS="$HOME/Library/LaunchAgents"
-AGENT_LABEL="at.sadu.lyx.capslock-escape"
+AGENT_LABEL="com.lyx-theme.capslock-escape"
 AGENT_PLIST="$LAUNCH_AGENTS/$AGENT_LABEL.plist"
 ZSHRC="$HOME/.zshrc"
 MARK_BEGIN="# >>> lyx-theme >>>"
@@ -27,37 +27,36 @@ info() { printf '\033[1;34m::\033[0m %s\n' "$*"; }
 ok()   { printf '\033[1;32m ok\033[0m %s\n' "$*"; }
 warn() { printf '\033[1;33m  !\033[0m %s\n' "$*"; }
 
-# --- Dienste stoppen --------------------------------------------------------
-info "Dienste stoppen"
-brew services stop sketchybar >/dev/null 2>&1 && ok "sketchybar gestoppt" || warn "sketchybar lief nicht"
-brew services stop borders    >/dev/null 2>&1 && ok "borders gestoppt"    || warn "borders lief nicht"
+# --- Stop the services ------------------------------------------------------
+info "Stopping services"
+brew services stop sketchybar >/dev/null 2>&1 && ok "sketchybar stopped" || warn "sketchybar was not running"
+brew services stop borders    >/dev/null 2>&1 && ok "borders stopped"    || warn "borders was not running"
 pkill -x borders 2>/dev/null || true
 pkill -x sketchybar 2>/dev/null || true
 
 if pgrep -xq AeroSpace; then
     osascript -e 'quit app "AeroSpace"' 2>/dev/null || pkill -x AeroSpace || true
-    ok "AeroSpace beendet"
+    ok "AeroSpace quit"
 fi
 
-# --- LaunchAgent + Tastenbelegung ------------------------------------------
-info "Feststelltaste zuruecksetzen"
-launchctl bootout "gui/$UID/$AGENT_LABEL" 2>/dev/null && ok "LaunchAgent entladen" || warn "LaunchAgent war nicht geladen"
-[ -f "$AGENT_PLIST" ] && rm -f "$AGENT_PLIST" && ok "plist geloescht"
-# Leere UserKeyMapping = Werkszustand, wirkt sofort.
-hidutil property --set '{"UserKeyMapping":[]}' >/dev/null && ok "Tastenbelegung zurueckgesetzt"
+# --- LaunchAgent and key mapping --------------------------------------------
+info "Restoring Caps Lock"
+launchctl bootout "gui/$UID/$AGENT_LABEL" 2>/dev/null && ok "LaunchAgent unloaded" || warn "LaunchAgent was not loaded"
+[ -f "$AGENT_PLIST" ] && rm -f "$AGENT_PLIST" && ok "plist removed"
+# An empty UserKeyMapping is the factory state and applies immediately.
+hidutil property --set '{"UserKeyMapping":[]}' >/dev/null && ok "key mapping reset"
 
-# --- macOS-Einstellungen zurueck --------------------------------------------
-# Beide Keys werden geloescht, nicht auf false gesetzt: dann gilt wieder der
-# Systemstandard. Hattest du einen davon schon vor lyx-theme selbst gesetzt,
-# ist er danach ebenfalls weg.
-info "macOS-Menueleiste wieder einblenden"
-defaults delete NSGlobalDomain _HIHideMenuBar 2>/dev/null && ok "zurueckgesetzt" || warn "war nicht gesetzt"
+# --- macOS settings ---------------------------------------------------------
+# Both keys are deleted rather than set to false, so the system default applies
+# again. If you had set either one yourself before lyx-theme, it is gone too.
+info "Showing the macOS menu bar again"
+defaults delete NSGlobalDomain _HIHideMenuBar 2>/dev/null && ok "reset" || warn "was not set"
 
-info "Liquid Glass wieder einschalten"
-defaults delete com.apple.universalaccess reduceTransparency 2>/dev/null && ok "zurueckgesetzt" || warn "war nicht gesetzt"
+info "Turning Liquid Glass back on"
+defaults delete com.apple.universalaccess reduceTransparency 2>/dev/null && ok "reset" || warn "was not set"
 
-# --- Symlinks entfernen, Sicherungen zurueckspielen -------------------------
-# unlink_one <ziel-absolut>
+# --- Remove symlinks, restore backups ---------------------------------------
+# unlink_one <absolute-target>
 unlink_one() {
     local dst="$1"
     local bak="$BACKUP_DIR/${dst#$HOME/}"
@@ -67,64 +66,64 @@ unlink_one() {
         case "$target" in
             "$THEME_DIR"/*)
                 rm -f "$dst"
-                ok "Link entfernt: ${dst#$HOME/}"
+                ok "link removed: ${dst#$HOME/}"
                 ;;
             *)
-                warn "${dst#$HOME/} zeigt woanders hin ($target) — bleibt unangetastet"
+                warn "${dst#$HOME/} points elsewhere ($target) - left alone"
                 return
                 ;;
         esac
     elif [ -e "$dst" ]; then
-        warn "${dst#$HOME/} ist kein lyx-theme-Link — bleibt unangetastet"
+        warn "${dst#$HOME/} is not a lyx-theme link - left alone"
         return
     fi
 
     if [ -e "$bak" ]; then
         mkdir -p "$(dirname "$dst")"
         mv "$bak" "$dst"
-        ok "Sicherung zurueckgespielt: ${dst#$HOME/}"
+        ok "backup restored: ${dst#$HOME/}"
     fi
 }
 
-info "Configs entfernen"
+info "Removing configs"
 unlink_one "$HOME/.aerospace.toml"
 unlink_one "$CONFIG_DIR/ghostty/config"
 unlink_one "$CONFIG_DIR/sketchybar"
 unlink_one "$CONFIG_DIR/borders/bordersrc"
 unlink_one "$CONFIG_DIR/starship.toml"
 
-# Leergeraeumte Ordner mitnehmen, aber nur wenn wirklich leer.
+# Take emptied directories with us, but only when they really are empty.
 for d in "$CONFIG_DIR/ghostty" "$CONFIG_DIR/borders"; do
-    [ -d "$d" ] && rmdir "$d" 2>/dev/null && ok "leerer Ordner entfernt: ${d#$HOME/}"
+    [ -d "$d" ] && rmdir "$d" 2>/dev/null && ok "empty directory removed: ${d#$HOME/}"
 done
 [ -d "$BACKUP_DIR" ] && find "$BACKUP_DIR" -type d -empty -delete 2>/dev/null || true
 
-# --- zshrc aufraeumen -------------------------------------------------------
-info "zshrc aufraeumen"
+# --- Clean up zshrc ---------------------------------------------------------
+info "Cleaning up zshrc"
 if grep -qF "$MARK_BEGIN" "$ZSHRC" 2>/dev/null; then
     cp "$ZSHRC" "$ZSHRC.lyx-bak"
     sed -i '' "/^${MARK_BEGIN}\$/,/^${MARK_END}\$/d" "$ZSHRC"
-    # die Leerzeile, die install.sh vor den Block gesetzt hat
+    # the blank line install.sh put in front of the block
     perl -0pi -e 's/\n{3,}\z/\n/' "$ZSHRC"
-    ok "Block entfernt (Sicherung: ${ZSHRC#$HOME/}.lyx-bak)"
+    ok "block removed (backup: ${ZSHRC#$HOME/}.lyx-bak)"
 else
-    warn "kein lyx-theme-Block in der zshrc"
+    warn "no lyx-theme block in your zshrc"
 fi
 
-# --- Pakete (nur mit --packages) -------------------------------------------
+# --- Packages (only with --packages) ----------------------------------------
 if [ "$REMOVE_PACKAGES" -eq 1 ]; then
-    info "Homebrew-Pakete entfernen"
+    info "Removing Homebrew packages"
     for c in aerospace ghostty font-jetbrains-mono-nerd-font; do
-        brew uninstall --cask "$c" 2>/dev/null && ok "$c" || warn "$c war nicht installiert"
+        brew uninstall --cask "$c" 2>/dev/null && ok "$c" || warn "$c was not installed"
     done
     for f in sketchybar borders starship; do
-        brew uninstall --formula "$f" 2>/dev/null && ok "$f" || warn "$f war nicht installiert"
+        brew uninstall --formula "$f" 2>/dev/null && ok "$f" || warn "$f was not installed"
     done
-    warn "jq wurde bewusst stehen gelassen — das braucht vermutlich noch was anderes."
+    warn "jq was deliberately left alone - something else probably needs it."
 else
-    info "Homebrew-Pakete bleiben stehen (--packages entfernt sie auch)."
+    info "Homebrew packages stay (--packages removes them too)."
 fi
 
 echo
-info "Fertig. Neues Terminalfenster oeffnen, damit die zsh ohne Starship startet."
-info "Der Ordner $THEME_DIR selbst bleibt liegen — den loeschst du von Hand."
+info "Done. Open a new terminal window so zsh starts without Starship."
+info "The $THEME_DIR directory itself stays - delete it by hand."

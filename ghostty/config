@@ -1,8 +1,8 @@
-# lyx-theme — Ghostty
-# Doku: https://ghostty.org/docs/config
+# lyx-theme - Ghostty
+# Docs: https://ghostty.org/docs/config
 
-# Omarchy "Osaka Jade" — Ghostty bringt das Theme nicht mit, also explizit.
-# Quelle: basecamp/omarchy themes/osaka-jade/colors.toml
+# Omarchy "Osaka Jade" - Ghostty does not ship this theme, so spell it out.
+# Source: basecamp/omarchy themes/osaka-jade/colors.toml
 background = #111c18
 foreground = #c1c497
 cursor-color = #509475
@@ -31,7 +31,7 @@ font-family = JetBrains Mono
 font-size = 14
 font-thicken = true
 
-# Transparenz + Blur wie bei Omarchy
+# Transparency and blur, the way Omarchy does it
 background-opacity = 0.92
 background-blur = 20
 
@@ -39,7 +39,7 @@ window-padding-x = 12
 window-padding-y = 12
 window-padding-balance = true
 
-# Kein macOS-Titelbalken — AeroSpace kachelt, der Balken waere nur Verlust
+# No macOS title bar - AeroSpace tiles, the bar would only cost space
 macos-titlebar-style = tabs
 window-decoration = auto
 
@@ -52,8 +52,8 @@ confirm-close-surface = false
 shell-integration = detect
 shell-integration-features = cursor,sudo,title
 
-# Neue Fenster/Tabs im gleichen Verzeichnis
+# New windows and tabs inherit the working directory
 window-inherit-working-directory = true
 
-# Alt als Meta, damit alt-Kuerzel nicht in Sonderzeichen laufen
+# Treat alt as meta so alt shortcuts do not turn into special characters
 macos-option-as-alt = true
