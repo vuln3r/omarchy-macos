@@ -1,10 +1,23 @@
-# lyx-theme
+# omarchy-macos
 
-A tiling setup for macOS in **Osaka Jade** - windows tile themselves, a custom
-status bar replaces Apple's menu bar, and everything shares one palette.
-Omarchy's idea, built for macOS.
+[Omarchy](https://omarchy.org)'s look and feel on **macOS**, in **Osaka Jade**.
+Windows tile themselves, a status bar replaces Apple's menu bar, the terminal
+gets the Omarchy command line, and every piece shares one palette.
+
+> **This is not Omarchy or Linux running on a Mac.** Nothing gets replaced - it
+> is AeroSpace where Omarchy has Hyprland, SketchyBar where it has Waybar,
+> Ghostty on both. macOS stays macOS.
 
 > Tested on a 16" MacBook Pro (M1 Max), macOS 27.0.
+
+## Screenshots
+
+|  |  |
+|---|---|
+| ![The desktop](img/desktop.png) | ![The terminal](img/terminal.png) |
+| AeroSpace tiles, SketchyBar on top, JankyBorders around the focused window | Ghostty: fastfetch, the Starship prompt, `ls` through eza |
+| ![lazygit](img/lazygit.png) | ![btop](img/btop.png) |
+| lazygit in the Osaka Jade terminal palette | btop in the Osaka Jade theme |
 
 ```
    +- SketchyBar --------------------------------------------------------+
@@ -45,8 +58,8 @@ right away. `aerospace.toml` even reloads itself on save.
 ## Install
 
 ```sh
-git clone <repo> ~/lyx-theme
-cd ~/lyx-theme
+git clone <repo> ~/omarchy-macos
+cd ~/omarchy-macos
 ./install.sh
 ```
 
@@ -194,7 +207,7 @@ has to follow, or the bar covers the windows at the top.
 [zsh-syntax-highlighting](https://github.com/zsh-users/zsh-syntax-highlighting).
 This repo does not install them - if they are there, `zsh/osaka-jade.zsh` puts
 them in the palette, otherwise it does nothing. It has to be sourced *after*
-the plugins load, which is why the `lyx-theme` block belongs at the end of
+the plugins load, which is why the `omarchy-macos` block belongs at the end of
 `.zshrc`.
 
 Worth knowing if you write your own: the autosuggestion default is `fg=8`,
@@ -203,7 +216,7 @@ contrast floor, which reads as "the suggestions are not working". Jade at
 4.9:1 is visible without competing with real output. The syntax highlighter's
 default comment style has the same problem, it is black on near-black.
 
-**The greeting** is fastfetch, called from the `lyx-theme` block in `.zshrc`
+**The greeting** is fastfetch, called from the `omarchy-macos` block in `.zshrc`
 for interactive shells only, so scripts and the shells editors spawn stay
 quiet. It costs about 10 ms; every module you add to
 `fastfetch/config.jsonc` is latency in front of the first prompt. `install.sh`
@@ -224,7 +237,7 @@ visibly misses the rounded corner.
 
 Symlinks removed, originals restored from `.backup/`, LaunchAgent unloaded,
 `hidutil` back to factory state, `.hushlogin` deleted if it is still empty,
-the shell block taken out of `.zshrc` (a copy is left as `.zshrc.lyx-bak`). The macOS settings are deleted rather than
+the shell block taken out of `.zshrc` (a copy is left as `.zshrc.omarchy-macos-bak`). The macOS settings are deleted rather than
 set to false - if you had configured the menu bar or transparency yourself
 before, that is gone too.
 

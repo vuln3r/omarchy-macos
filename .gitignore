@@ -4,7 +4,7 @@
 
 # Which packages install.sh installed, so uninstall.sh knows what it may
 # remove. Machine specific.
-.installed-by-lyx
+.installed-by-omarchy-macos
 
 .DS_Store
 

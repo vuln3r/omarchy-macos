@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# lyx-theme - palette (Omarchy "Osaka Jade")
+# omarchy-macos - palette (Omarchy "Osaka Jade")
 # Source: basecamp/omarchy themes/osaka-jade/colors.toml
 # Read by sketchybarrc AND by the plugins: plugins run as separate processes
 # and do not inherit variables from sketchybarrc.

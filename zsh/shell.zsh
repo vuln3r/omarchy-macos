@@ -1,4 +1,4 @@
-# lyx-theme - shell (Osaka Jade)
+# omarchy-macos - shell (Osaka Jade)
 # The terminal half of Omarchy, ported to zsh.
 # Source: basecamp/omarchy default/bash/{aliases,envs,init}
 #

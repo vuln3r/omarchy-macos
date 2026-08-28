@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# lyx-theme - uninstaller
+# omarchy-macos - uninstaller
 # Reverts everything install.sh touched.
 #
 #   ./uninstall.sh              configs, LaunchAgent and key mapping
@@ -14,11 +14,11 @@ THEME_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 CONFIG_DIR="$HOME/.config"
 BACKUP_DIR="$THEME_DIR/.backup"
 LAUNCH_AGENTS="$HOME/Library/LaunchAgents"
-AGENT_LABEL="com.lyx-theme.capslock-escape"
+AGENT_LABEL="com.omarchy-macos.capslock-escape"
 AGENT_PLIST="$LAUNCH_AGENTS/$AGENT_LABEL.plist"
 ZSHRC="$HOME/.zshrc"
-MARK_BEGIN="# >>> lyx-theme >>>"
-MARK_END="# <<< lyx-theme <<<"
+MARK_BEGIN="# >>> omarchy-macos >>>"
+MARK_END="# <<< omarchy-macos <<<"
 
 REMOVE_PACKAGES=0
 [ "${1:-}" = "--packages" ] && REMOVE_PACKAGES=1
@@ -48,7 +48,7 @@ hidutil property --set '{"UserKeyMapping":[]}' >/dev/null && ok "key mapping res
 
 # --- macOS settings ---------------------------------------------------------
 # Both keys are deleted rather than set to false, so the system default applies
-# again. If you had set either one yourself before lyx-theme, it is gone too.
+# again. If you had set either one yourself before omarchy-macos, it is gone too.
 info "Showing the macOS menu bar again"
 defaults delete NSGlobalDomain _HIHideMenuBar 2>/dev/null && ok "reset" || warn "was not set"
 
@@ -74,7 +74,7 @@ unlink_one() {
                 ;;
         esac
     elif [ -e "$dst" ]; then
-        warn "${dst#$HOME/} is not a lyx-theme link - left alone"
+        warn "${dst#$HOME/} is not a omarchy-macos link - left alone"
         return
     fi
 
@@ -114,13 +114,13 @@ fi
 # --- Clean up zshrc ---------------------------------------------------------
 info "Cleaning up zshrc"
 if grep -qF "$MARK_BEGIN" "$ZSHRC" 2>/dev/null; then
-    cp "$ZSHRC" "$ZSHRC.lyx-bak"
+    cp "$ZSHRC" "$ZSHRC.omarchy-macos-bak"
     sed -i '' "/^${MARK_BEGIN}\$/,/^${MARK_END}\$/d" "$ZSHRC"
     # the blank line install.sh put in front of the block
     perl -0pi -e 's/\n{3,}\z/\n/' "$ZSHRC"
-    ok "block removed (backup: ${ZSHRC#$HOME/}.lyx-bak)"
+    ok "block removed (backup: ${ZSHRC#$HOME/}.omarchy-macos-bak)"
 else
-    warn "no lyx-theme block in your zshrc"
+    warn "no omarchy-macos block in your zshrc"
 fi
 
 # --- Packages (only with --packages) ----------------------------------------

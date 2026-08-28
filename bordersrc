@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# lyx-theme - JankyBorders (Osaka Jade)
+# omarchy-macos - JankyBorders (Osaka Jade)
 # Read automatically by `borders` when invoked without arguments.  man borders
 
 exec borders \

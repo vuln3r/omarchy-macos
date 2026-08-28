@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# lyx-theme - SketchyBar (Osaka Jade)
+# omarchy-macos - SketchyBar (Osaka Jade)
 # Docs: https://felixkratz.github.io/SketchyBar/
 
 PLUGIN_DIR="$CONFIG_DIR/plugins"
@@ -43,8 +43,8 @@ sketchybar --default updates=when_shown \
                      background.drawing=off
 
 # --- Left: Apple menu -------------------------------------------------------
-sketchybar --add item lyx_logo left \
-           --set lyx_logo icon="" \
+sketchybar --add item logo left \
+           --set logo icon="" \
                           icon.font="$FONT:Bold:16.0" \
                           icon.color=$ACCENT \
                           label.drawing=off \

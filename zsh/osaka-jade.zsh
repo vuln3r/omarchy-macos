@@ -1,5 +1,5 @@
-# lyx-theme - zsh colors (Osaka Jade)
-# Sourced from the lyx-theme block in .zshrc, after oh-my-zsh has loaded its
+# omarchy-macos - zsh colors (Osaka Jade)
+# Sourced from the omarchy-macos block in .zshrc, after oh-my-zsh has loaded its
 # plugins. Both arrays are read when a line is drawn, not when the plugin
 # loads, so setting them here is late enough.
 

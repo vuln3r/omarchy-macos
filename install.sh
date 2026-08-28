@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# lyx-theme - installer
+# omarchy-macos - installer
 # Links the configs into ~/.config, installs missing packages, maps Caps Lock
 # to Escape and starts the services.
 #
@@ -11,13 +11,13 @@ set -euo pipefail
 THEME_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 CONFIG_DIR="$HOME/.config"
 BACKUP_DIR="$THEME_DIR/.backup"
-MANIFEST="$THEME_DIR/.installed-by-lyx"
+MANIFEST="$THEME_DIR/.installed-by-omarchy-macos"
 LAUNCH_AGENTS="$HOME/Library/LaunchAgents"
-AGENT_LABEL="com.lyx-theme.capslock-escape"
+AGENT_LABEL="com.omarchy-macos.capslock-escape"
 AGENT_PLIST="$LAUNCH_AGENTS/$AGENT_LABEL.plist"
 ZSHRC="$HOME/.zshrc"
-MARK_BEGIN="# >>> lyx-theme >>>"
-MARK_END="# <<< lyx-theme <<<"
+MARK_BEGIN="# >>> omarchy-macos >>>"
+MARK_END="# <<< omarchy-macos <<<"
 
 info()  { printf '\033[1;34m::\033[0m %s\n' "$*"; }
 ok()    { printf '\033[1;32m ok\033[0m %s\n' "$*"; }
@@ -131,7 +131,7 @@ if grep -qF "$MARK_BEGIN" "$ZSHRC" 2>/dev/null; then
 fi
 cat >> "$ZSHRC" <<'ZBLOCK'
 
-# >>> lyx-theme >>>
+# >>> omarchy-macos >>>
 export STARSHIP_CONFIG="$HOME/.config/starship.toml"
 eval "$(starship init zsh)"
 
@@ -145,7 +145,7 @@ eval "$(starship init zsh)"
 # A greeting instead of an empty window. Interactive only - scripts and the
 # shells editors spawn stay quiet.
 [[ -o interactive ]] && command -v fastfetch >/dev/null && fastfetch
-# <<< lyx-theme <<<
+# <<< omarchy-macos <<<
 ZBLOCK
 ok "block written"
 

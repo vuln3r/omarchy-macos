@@ -1,4 +1,4 @@
--- lyx-theme - Neovim (Osaka Jade)
+-- omarchy-macos - Neovim (Osaka Jade)
 -- Omarchy paints Neovim by pulling in LazyVim plus two plugins from GitHub.
 -- The palette is 25 colors, so it is spelled out here instead - same reason
 -- the Ghostty theme is spelled out: one file, no plugin manager, no network

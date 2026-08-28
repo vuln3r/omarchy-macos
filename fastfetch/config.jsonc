@@ -1,4 +1,4 @@
-// lyx-theme - fastfetch (Osaka Jade)
+// omarchy-macos - fastfetch (Osaka Jade)
 // Docs: https://github.com/fastfetch-cli/fastfetch/wiki/Configuration
 // Greets every new interactive shell. Keep it short - this runs before the
 // first prompt, so every module here is latency you pay on each new window.
