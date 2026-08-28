@@ -1,0 +1,9 @@
+# Configs that install.sh moved out of the way. These are the user's own
+# files - they must never end up in the repo.
+.backup/
+
+# Which packages install.sh installed, so uninstall.sh knows what it may
+# remove. Machine specific.
+.installed-by-lyx
+
+.DS_Store
