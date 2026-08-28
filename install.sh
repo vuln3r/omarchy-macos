@@ -163,10 +163,15 @@ plutil -lint "$AGENT_PLIST" >/dev/null || die "LaunchAgent-plist ist kaputt"
 launchctl bootout "gui/$UID/$AGENT_LABEL" 2>/dev/null || true
 launchctl bootstrap "gui/$UID" "$AGENT_PLIST" && ok "LaunchAgent $AGENT_LABEL geladen"
 
-# --- macOS-Menueleiste ausblenden -------------------------------------------
+# --- macOS-Einstellungen ----------------------------------------------------
 # Sonst liegt die native Leiste ueber der SketchyBar und beide sind halb sichtbar.
 info "macOS-Menueleiste ausblenden"
 defaults write NSGlobalDomain _HIHideMenuBar -bool true && ok "_HIHideMenuBar=true (wirkt nach Ab-/Anmeldung)"
+
+# Liquid Glass (macOS 26+) legt Milchglas ueber SketchyBar und Fensterraender
+# und wischt Osaka Jade weich. Der Schalter dafuer heisst reduceTransparency.
+info "Liquid Glass abschalten"
+defaults write com.apple.universalaccess reduceTransparency -bool true && ok "reduceTransparency=true (wirkt nach Ab-/Anmeldung)"
 
 # --- Dienste ----------------------------------------------------------------
 info "Dienste starten"

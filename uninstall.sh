@@ -46,9 +46,15 @@ launchctl bootout "gui/$UID/$AGENT_LABEL" 2>/dev/null && ok "LaunchAgent entlade
 # Leere UserKeyMapping = Werkszustand, wirkt sofort.
 hidutil property --set '{"UserKeyMapping":[]}' >/dev/null && ok "Tastenbelegung zurueckgesetzt"
 
-# --- macOS-Menueleiste zurueck ----------------------------------------------
+# --- macOS-Einstellungen zurueck --------------------------------------------
+# Beide Keys werden geloescht, nicht auf false gesetzt: dann gilt wieder der
+# Systemstandard. Hattest du einen davon schon vor lyx-theme selbst gesetzt,
+# ist er danach ebenfalls weg.
 info "macOS-Menueleiste wieder einblenden"
 defaults delete NSGlobalDomain _HIHideMenuBar 2>/dev/null && ok "zurueckgesetzt" || warn "war nicht gesetzt"
+
+info "Liquid Glass wieder einschalten"
+defaults delete com.apple.universalaccess reduceTransparency 2>/dev/null && ok "zurueckgesetzt" || warn "war nicht gesetzt"
 
 # --- Symlinks entfernen, Sicherungen zurueckspielen -------------------------
 # unlink_one <ziel-absolut>
