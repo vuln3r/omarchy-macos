@@ -33,6 +33,7 @@ itself when Tailscale is not installed.
 | [JankyBorders](https://github.com/FelixKratz/JankyBorders) | window borders | `bordersrc` -> `~/.config/borders/bordersrc` |
 | [Ghostty](https://ghostty.org) | terminal | `ghostty/config` -> `~/.config/ghostty/config` |
 | [Starship](https://starship.rs) | prompt | `starship.toml` -> `~/.config/starship.toml` |
+| [fastfetch](https://github.com/fastfetch-cli/fastfetch) | greeting | `fastfetch/config.jsonc` -> `~/.config/fastfetch/config.jsonc` |
 
 Everything is **symlinked** into `~`, not copied, so editing here takes effect
 right away. `aerospace.toml` even reloads itself on save.
@@ -184,6 +185,13 @@ variables from `sketchybarrc`, so every plugin sources the file itself.
 `topmost` and reserves no space of its own, so if you change the height the gap
 has to follow, or the bar covers the windows at the top.
 
+**The greeting** is fastfetch, called from the `lyx-theme` block in `.zshrc`
+for interactive shells only, so scripts and the shells editors spawn stay
+quiet. It costs about 10 ms; every module you add to
+`fastfetch/config.jsonc` is latency in front of the first prompt. `install.sh`
+also drops an empty `~/.hushlogin`, which is what silences login's "Last
+login:" and "You have mail." above it.
+
 **Window borders** live in `bordersrc`: `width` for thickness, `active_color`
 and `inactive_color` for the color. Leave `style` on `round` - macOS has been
 rounding window corners in the WindowServer since Big Sur, and a square border
@@ -197,8 +205,8 @@ visibly misses the rounded corner.
 ```
 
 Symlinks removed, originals restored from `.backup/`, LaunchAgent unloaded,
-`hidutil` back to factory state, the Starship block taken out of `.zshrc` (a
-copy is left as `.zshrc.lyx-bak`). The macOS settings are deleted rather than
+`hidutil` back to factory state, `.hushlogin` deleted if it is still empty,
+the shell block taken out of `.zshrc` (a copy is left as `.zshrc.lyx-bak`). The macOS settings are deleted rather than
 set to false - if you had configured the menu bar or transparency yourself
 before, that is gone too.
 

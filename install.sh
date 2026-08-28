@@ -39,7 +39,7 @@ command -v brew >/dev/null 2>&1 || die "Homebrew not found. https://brew.sh"
 # Names verified 2026-08-28. 'borders' used to be called 'janky-borders', and
 # the Nerd Fonts used to live in the now-retired homebrew/cask-fonts tap.
 TAPS=(felixkratz/formulae nikitabobko/tap)
-FORMULAE=(felixkratz/formulae/sketchybar felixkratz/formulae/borders starship jq)
+FORMULAE=(felixkratz/formulae/sketchybar felixkratz/formulae/borders starship fastfetch jq)
 CASKS=(aerospace ghostty font-jetbrains-mono-nerd-font)
 
 info "Checking taps"
@@ -110,22 +110,39 @@ link ghostty/config            "$CONFIG_DIR/ghostty/config"
 link sketchybar                "$CONFIG_DIR/sketchybar"
 link bordersrc                 "$CONFIG_DIR/borders/bordersrc"
 link starship.toml             "$CONFIG_DIR/starship.toml"
+link fastfetch/config.jsonc    "$CONFIG_DIR/fastfetch/config.jsonc"
 
 chmod +x "$THEME_DIR/sketchybar/sketchybarrc" "$THEME_DIR/sketchybar/plugins/"*.sh "$THEME_DIR/bordersrc"
 
-# --- Hook Starship into zsh -------------------------------------------------
-info "Starship in $ZSHRC"
+# --- Hook the shell up ------------------------------------------------------
+# The block is rewritten rather than skipped, so re-running this script picks
+# up new lines instead of leaving an old block behind.
+info "Shell block in $ZSHRC"
 if grep -qF "$MARK_BEGIN" "$ZSHRC" 2>/dev/null; then
-    ok "block already present"
-else
-    cat >> "$ZSHRC" <<'ZBLOCK'
+    sed -i '' "/^${MARK_BEGIN}\$/,/^${MARK_END}\$/d" "$ZSHRC"
+    perl -0pi -e 's/\n{3,}\z/\n/' "$ZSHRC"
+fi
+cat >> "$ZSHRC" <<'ZBLOCK'
 
 # >>> lyx-theme >>>
 export STARSHIP_CONFIG="$HOME/.config/starship.toml"
 eval "$(starship init zsh)"
+
+# A greeting instead of an empty window. Interactive only - scripts and the
+# shells editors spawn stay quiet.
+[[ -o interactive ]] && command -v fastfetch >/dev/null && fastfetch
 # <<< lyx-theme <<<
 ZBLOCK
-    ok "block added"
+ok "block written"
+
+# --- Quiet login ------------------------------------------------------------
+# login(1) prints "Last login:" and "You have mail." above the greeting.
+# An empty ~/.hushlogin turns both off; it is a macOS feature, not ours.
+if [ -e "$HOME/.hushlogin" ]; then
+    ok ".hushlogin already there"
+else
+    : > "$HOME/.hushlogin"
+    ok ".hushlogin created"
 fi
 
 # --- Caps Lock -> Escape ----------------------------------------------------

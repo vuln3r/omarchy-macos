@@ -91,12 +91,21 @@ unlink_one "$CONFIG_DIR/ghostty/config"
 unlink_one "$CONFIG_DIR/sketchybar"
 unlink_one "$CONFIG_DIR/borders/bordersrc"
 unlink_one "$CONFIG_DIR/starship.toml"
+unlink_one "$CONFIG_DIR/fastfetch/config.jsonc"
 
 # Take emptied directories with us, but only when they really are empty.
-for d in "$CONFIG_DIR/ghostty" "$CONFIG_DIR/borders"; do
+for d in "$CONFIG_DIR/ghostty" "$CONFIG_DIR/borders" "$CONFIG_DIR/fastfetch"; do
     [ -d "$d" ] && rmdir "$d" 2>/dev/null && ok "empty directory removed: ${d#$HOME/}"
 done
 [ -d "$BACKUP_DIR" ] && find "$BACKUP_DIR" -type d -empty -delete 2>/dev/null || true
+
+# --- Quiet login ------------------------------------------------------------
+# Only ours if it is still empty; anything with content came from elsewhere.
+if [ -f "$HOME/.hushlogin" ] && [ ! -s "$HOME/.hushlogin" ]; then
+    rm -f "$HOME/.hushlogin" && ok ".hushlogin removed"
+elif [ -e "$HOME/.hushlogin" ]; then
+    warn ".hushlogin is not empty - left alone"
+fi
 
 # --- Clean up zshrc ---------------------------------------------------------
 info "Cleaning up zshrc"
