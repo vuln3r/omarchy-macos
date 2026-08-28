@@ -9,15 +9,15 @@ CHARGING=$(echo "$BATT" | grep -c 'AC Power')
 
 COLOR=0xffc1c497
 if [ "$CHARGING" -eq 1 ]; then
-    ICON=""
+    ICON=""
     COLOR=0xff63b07a
 else
     case "${PERCENT}" in
-        100|9[0-9]|8[0-9]) ICON="" ;;
-        7[0-9]|6[0-9])     ICON="" ;;
-        5[0-9]|4[0-9])     ICON="" ;;
-        3[0-9]|2[0-9])     ICON="" ; COLOR=0xffe5c736 ;;
-        *)                 ICON="" ; COLOR=0xffff5345 ;;
+        100|9[0-9]|8[0-9]) ICON="" ;;
+        7[0-9]|6[0-9])     ICON="" ;;
+        5[0-9]|4[0-9])     ICON="" ;;
+        3[0-9]|2[0-9])     ICON="" ; COLOR=0xffe5c736 ;;
+        *)                 ICON="" ; COLOR=0xffff5345 ;;
     esac
 fi
 

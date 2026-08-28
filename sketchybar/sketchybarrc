@@ -35,7 +35,7 @@ sketchybar --default updates=when_shown \
 
 # --- Links: Apple-Menue -----------------------------------------------------
 sketchybar --add item lyx_logo left \
-           --set lyx_logo icon="" \
+           --set lyx_logo icon="" \
                           icon.font="$FONT:Bold:16.0" \
                           icon.color=$ACCENT \
                           label.drawing=off \
@@ -65,14 +65,14 @@ done
 sketchybar --add item front_app left \
            --set front_app icon.drawing=off \
                            label.font="$FONT:Bold:13.0" \
-                           label.color=$MAGENTA \
+                           label.color=$ACCENT \
                            padding_left=10 \
                            script="$PLUGIN_DIR/front_app.sh" \
            --subscribe front_app front_app_switched
 
 # --- Rechts: Uhr ------------------------------------------------------------
 sketchybar --add item clock right \
-           --set clock icon="" \
+           --set clock icon="" \
                        icon.color=$ACCENT \
                        background.drawing=on \
                        update_freq=15 \
@@ -90,6 +90,14 @@ sketchybar --add item volume right \
            --set volume padding_right=6 \
                         script="$PLUGIN_DIR/volume.sh" \
            --subscribe volume volume_change
+
+# --- Rechts: RAM ------------------------------------------------------------
+# Bei LM Studio neben Xcode der Wert, der zuerst weh tut. Faerbt sich ab 60%
+# gelb, ab 80% rot.
+sketchybar --add item memory right \
+           --set memory update_freq=15 \
+                        padding_right=6 \
+                        script="$PLUGIN_DIR/memory.sh"
 
 # --- Rechts: WLAN -----------------------------------------------------------
 sketchybar --add item wifi right \
