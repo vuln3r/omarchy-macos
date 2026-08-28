@@ -1,0 +1,59 @@
+# lyx-theme — Ghostty
+# Doku: https://ghostty.org/docs/config
+
+# Omarchy "Osaka Jade" — Ghostty bringt das Theme nicht mit, also explizit.
+# Quelle: basecamp/omarchy themes/osaka-jade/colors.toml
+background = #111c18
+foreground = #c1c497
+cursor-color = #509475
+selection-background = #32473b
+selection-foreground = #d6d5bc
+
+palette = 0=#0c1512
+palette = 1=#ff5345
+palette = 2=#549e6a
+palette = 3=#459451
+palette = 4=#509475
+palette = 5=#d2689c
+palette = 6=#2dd5b7
+palette = 7=#c1c497
+palette = 8=#53685b
+palette = 9=#db9f9c
+palette = 10=#63b07a
+palette = 11=#e5c736
+palette = 12=#acd4cf
+palette = 13=#75bbb3
+palette = 14=#8cd3cb
+palette = 15=#d6d5bc
+
+font-family = JetBrainsMono Nerd Font
+font-family = JetBrains Mono
+font-size = 14
+font-thicken = true
+
+# Transparenz + Blur wie bei Omarchy
+background-opacity = 0.92
+background-blur = 20
+
+window-padding-x = 12
+window-padding-y = 12
+window-padding-balance = true
+
+# Kein macOS-Titelbalken — AeroSpace kachelt, der Balken waere nur Verlust
+macos-titlebar-style = tabs
+window-decoration = auto
+
+cursor-style = block
+cursor-style-blink = false
+mouse-hide-while-typing = true
+
+copy-on-select = clipboard
+confirm-close-surface = false
+shell-integration = detect
+shell-integration-features = cursor,sudo,title
+
+# Neue Fenster/Tabs im gleichen Verzeichnis
+window-inherit-working-directory = true
+
+# Alt als Meta, damit alt-Kuerzel nicht in Sonderzeichen laufen
+macos-option-as-alt = true

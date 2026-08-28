@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+# lyx-theme — JankyBorders (Osaka Jade)
+# Wird von `borders` ohne Argumente automatisch gelesen.  man borders
+
+exec borders \
+    style=round \
+    width=5.0 \
+    hidpi=on \
+    active_color=0xff509475 \
+    inactive_color=0xff23372b \
+    blacklist="Ghostty Quick Terminal"

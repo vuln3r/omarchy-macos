@@ -1,0 +1,122 @@
+# lyx-theme — Starship (Osaka Jade)
+# Doku: https://starship.rs/config/
+
+"$schema" = 'https://starship.rs/config-schema.json'
+
+format = """
+[](bg0)\
+$os\
+$directory\
+[](fg:bg0 bg:bg1)\
+$git_branch$git_status\
+[](fg:bg1 bg:bg2)\
+$nodejs$python$rust$golang$php$swift$java\
+[](fg:bg2)\
+$fill\
+$cmd_duration\
+$time\
+$line_break$character"""
+
+palette = 'osakajade'
+
+add_newline = true
+
+# Quelle: basecamp/omarchy themes/osaka-jade/colors.toml
+[palettes.osakajade]
+bg0 = '#23372b'
+bg1 = '#111c18'
+bg2 = '#0c1512'
+fg = '#c1c497'
+blue = '#509475'
+cyan = '#2dd5b7'
+green = '#63b07a'
+magenta = '#d2689c'
+red = '#ff5345'
+yellow = '#e5c736'
+orange = '#a2734b'
+comment = '#53685b'
+
+[os]
+disabled = false
+style = "bg:bg0 fg:fg"
+format = '[ $symbol ]($style)'
+
+[os.symbols]
+Macos = ""
+
+[directory]
+style = "bg:bg0 fg:fg"
+format = "[ $path ]($style)"
+truncation_length = 3
+truncation_symbol = "…/"
+
+[directory.substitutions]
+"Documents" = " "
+"Downloads" = " "
+"Music" = " "
+"Pictures" = " "
+"Projects" = " "
+"Desktop" = " "
+
+[git_branch]
+symbol = ""
+style = "bg:bg1 fg:fg"
+format = '[ $symbol $branch ]($style)'
+
+[git_status]
+style = "bg:bg1 fg:yellow"
+format = '[$all_status$ahead_behind ]($style)'
+
+[nodejs]
+symbol = ""
+style = "bg:bg2 fg:green"
+format = '[ $symbol $version ]($style)'
+
+[python]
+symbol = ""
+style = "bg:bg2 fg:yellow"
+format = '[ $symbol $version ]($style)'
+
+[rust]
+symbol = ""
+style = "bg:bg2 fg:orange"
+format = '[ $symbol $version ]($style)'
+
+[golang]
+symbol = ""
+style = "bg:bg2 fg:cyan"
+format = '[ $symbol $version ]($style)'
+
+[php]
+symbol = ""
+style = "bg:bg2 fg:magenta"
+format = '[ $symbol $version ]($style)'
+
+[swift]
+symbol = ""
+style = "bg:bg2 fg:orange"
+format = '[ $symbol $version ]($style)'
+
+[java]
+symbol = ""
+style = "bg:bg2 fg:red"
+format = '[ $symbol $version ]($style)'
+
+[fill]
+symbol = ' '
+
+[cmd_duration]
+min_time = 2000
+style = "fg:comment"
+format = '[ $duration ]($style)'
+
+[time]
+disabled = false
+time_format = "%H:%M"
+style = "fg:comment"
+format = '[ $time ]($style)'
+
+[character]
+success_symbol = '[❯](bold green)'
+error_symbol = '[❯](bold red)'
+vimcmd_symbol = '[❮](bold blue)'
