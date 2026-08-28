@@ -9,6 +9,9 @@ cursor-color = #509475
 selection-background = #32473b
 selection-foreground = #d6d5bc
 
+# The MacBook screen is P3 - in sRGB the jade renders noticeably duller
+window-colorspace = display-p3
+
 palette = 0=#0c1512
 palette = 1=#ff5345
 palette = 2=#549e6a
@@ -39,9 +42,16 @@ window-padding-x = 12
 window-padding-y = 12
 window-padding-balance = true
 
-# No macOS title bar - AeroSpace tiles, the bar would only cost space
-macos-titlebar-style = tabs
+# No macOS title bar - AeroSpace tiles, the bar would only cost space.
+# "hidden" keeps the rounded frame, unlike window-decoration = none. Dragging
+# by the top edge is gone with it, which a tiling WM does not need anyway.
+macos-titlebar-style = hidden
 window-decoration = auto
+
+# Dock icon in the theme colors instead of the official purple
+macos-icon = custom-style
+macos-icon-ghost-color = #509475
+macos-icon-screen-color = #111c18
 
 cursor-style = block
 cursor-style-blink = false
