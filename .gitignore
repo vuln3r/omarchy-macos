@@ -7,3 +7,6 @@
 .installed-by-lyx
 
 .DS_Store
+
+# btop writes its log next to its config, which is this repo.
+btop/btop.log

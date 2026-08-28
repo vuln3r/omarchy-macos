@@ -93,6 +93,8 @@ unlink_one "$CONFIG_DIR/borders/bordersrc"
 unlink_one "$CONFIG_DIR/starship.toml"
 unlink_one "$CONFIG_DIR/fastfetch/config.jsonc"
 unlink_one "$CONFIG_DIR/zsh/osaka-jade.zsh"
+unlink_one "$CONFIG_DIR/zsh/shell.zsh"
+unlink_one "$CONFIG_DIR/btop"
 
 # Take emptied directories with us, but only when they really are empty.
 for d in "$CONFIG_DIR/ghostty" "$CONFIG_DIR/borders" "$CONFIG_DIR/fastfetch" "$CONFIG_DIR/zsh"; do

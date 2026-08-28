@@ -35,6 +35,8 @@ itself when Tailscale is not installed.
 | [Starship](https://starship.rs) | prompt | `starship.toml` -> `~/.config/starship.toml` |
 | [fastfetch](https://github.com/fastfetch-cli/fastfetch) | greeting | `fastfetch/config.jsonc` -> `~/.config/fastfetch/config.jsonc` |
 | zsh plugin colors | typing feedback | `zsh/osaka-jade.zsh` -> `~/.config/zsh/osaka-jade.zsh` |
+| [eza](https://eza.rocks), [bat](https://github.com/sharkdp/bat), [fzf](https://junegunn.github.io/fzf/), [zoxide](https://github.com/ajeetdsouza/zoxide) | the command line | `zsh/shell.zsh` -> `~/.config/zsh/shell.zsh` |
+| [btop](https://github.com/aristocratos/btop) | system monitor | `btop/` -> `~/.config/btop` |
 
 Everything is **symlinked** into `~`, not copied, so editing here takes effect
 right away. `aerospace.toml` even reloads itself on save.

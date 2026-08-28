@@ -39,7 +39,10 @@ command -v brew >/dev/null 2>&1 || die "Homebrew not found. https://brew.sh"
 # Names verified 2026-08-28. 'borders' used to be called 'janky-borders', and
 # the Nerd Fonts used to live in the now-retired homebrew/cask-fonts tap.
 TAPS=(felixkratz/formulae nikitabobko/tap)
-FORMULAE=(felixkratz/formulae/sketchybar felixkratz/formulae/borders starship fastfetch jq)
+# eza, bat, fzf, zoxide and btop are the terminal half of the theme - the
+# Omarchy command line, themed in zsh/shell.zsh and btop/.
+FORMULAE=(felixkratz/formulae/sketchybar felixkratz/formulae/borders starship fastfetch jq \
+          eza bat fzf zoxide btop)
 CASKS=(aerospace ghostty font-jetbrains-mono-nerd-font)
 
 info "Checking taps"
@@ -112,6 +115,8 @@ link bordersrc                 "$CONFIG_DIR/borders/bordersrc"
 link starship.toml             "$CONFIG_DIR/starship.toml"
 link fastfetch/config.jsonc    "$CONFIG_DIR/fastfetch/config.jsonc"
 link zsh/osaka-jade.zsh        "$CONFIG_DIR/zsh/osaka-jade.zsh"
+link zsh/shell.zsh             "$CONFIG_DIR/zsh/shell.zsh"
+link btop                      "$CONFIG_DIR/btop"
 
 chmod +x "$THEME_DIR/sketchybar/sketchybarrc" "$THEME_DIR/sketchybar/plugins/"*.sh "$THEME_DIR/bordersrc"
 
@@ -128,6 +133,9 @@ cat >> "$ZSHRC" <<'ZBLOCK'
 # >>> lyx-theme >>>
 export STARSHIP_CONFIG="$HOME/.config/starship.toml"
 eval "$(starship init zsh)"
+
+# eza, bat, fzf and zoxide - the Omarchy command line.
+[ -r "$HOME/.config/zsh/shell.zsh" ] && source "$HOME/.config/zsh/shell.zsh"
 
 # Palette for zsh-autosuggestions and zsh-syntax-highlighting. Last in the
 # file on purpose - both plugins have to be loaded before this runs.
