@@ -103,8 +103,11 @@ sketchybar --add item battery right \
            --subscribe battery power_source_change system_woke
 
 # --- Right: volume ----------------------------------------------------------
+# update_freq so that plugging headphones in or out is noticed even when it
+# does not come with a volume change.
 sketchybar --add item volume right \
-           --set volume padding_right=6 \
+           --set volume update_freq=10 \
+                        padding_right=6 \
                         script="$PLUGIN_DIR/volume.sh" \
            --subscribe volume volume_change
 
