@@ -215,6 +215,10 @@ run = 'move-node-to-workspace 1'
 if.app-id = 'com.axosoft.gitkraken'
 run = 'move-node-to-workspace 1'
 
+[[on-window-detected]]
+if.app-id = 'app.supabit.supacode'
+run = 'move-node-to-workspace 1'
+
 # --- 2: terminals ---
 [[on-window-detected]]
 if.app-id = 'com.mitchellh.ghostty'
@@ -222,14 +226,6 @@ run = 'move-node-to-workspace 2'
 
 [[on-window-detected]]
 if.app-id = 'dev.warp.Warp-Stable'
-run = 'move-node-to-workspace 2'
-
-[[on-window-detected]]
-if.app-id = 'com.googlecode.iterm2'
-run = 'move-node-to-workspace 2'
-
-[[on-window-detected]]
-if.app-id = 'com.apple.Terminal'
 run = 'move-node-to-workspace 2'
 
 # --- 3: browsers ---
